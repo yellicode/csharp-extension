@@ -7,6 +7,10 @@
   "module": "dist/es5/csharp.js",
   "es2015": "dist/es6/csharp.js",
   "types": "dist/types/csharp.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "github:yellicode/yellicode-csharp.git"
+  },
   "dependencies": {   
     "@yellicode/model": "^0.1.4",
     "@yellicode/templating": "^0.1.2"

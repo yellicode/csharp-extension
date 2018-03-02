@@ -1,12 +1,9 @@
-# Yellicode C# Package
-
-## C# package for Yellicode
-
+# C# extension for Yellicode
 Yellicode lets you build your own code generators with TypeScript. It consists of a Node.js CLI (Command Line Interface) as well as extensible APIs, making it easy for developers to create, share and re-use code generators.
 
 Check out [our website](https://www.yellicode.com) for more.
 
-This package contains a CSharpWriter class and other utilities that make is easier to generate C# code from a Yellicode template.
+This extension contains a CSharpWriter class and other utilities that make is easier to generate C# code from a Yellicode template.
 
 License: MIT
 
@@ -48,4 +45,4 @@ Generator.generateFromModel({outputFile: './MyClasses.cs'}, (textWriter: TextWri
 ```
 
 ### API Documentation
-For all CSharpWriter functions and options, check out the [API documentation](https://github.com/yellicode/yellicode-csharp/docs/api.md).
+For all CSharpWriter functions and options, check out the [API documentation](https://github.com/yellicode/yellicode-csharp/blob/master/docs/api.md).
