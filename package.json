@@ -1,6 +1,6 @@
 {
   "name": "@yellicode/csharp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "C# extension for Yellicode - an extensible code generator.",  
   "license": "MIT",
   "main": "dist/bundles/csharp.umd.js",
@@ -9,7 +9,7 @@
   "types": "dist/types/csharp.d.ts",
   "repository": {
     "type": "git",
-    "url": "github:yellicode/yellicode-csharp.git"
+    "url": "github:yellicode/csharp-extension.git"
   },
   "dependencies": {   
     "@yellicode/model": "^0.1.4",
