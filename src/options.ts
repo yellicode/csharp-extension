@@ -22,9 +22,8 @@ export enum CollectionType {
 }
 
 export enum NamespaceFeatures {
-    None = 0,
-    XmlDocSummary = 1 << 0,
-    All = XmlDocSummary
+    None = 0,    
+    All = None
 }
 
 export interface NamespaceOptions {

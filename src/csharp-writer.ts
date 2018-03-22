@@ -59,10 +59,7 @@ export class CSharpWriter extends CodeWriter {
         if (typeof data === 'string') {
             this.writeLine(`namespace ${data}`);
         }
-        else if (model.isPackage(data)) {
-            if (features & opts.NamespaceFeatures.XmlDocSummary) {
-                this.writeXmlDocSummary(data.ownedComments);
-            }
+        else if (model.isPackage(data)) {           
             if (options.writeFullName) {
                 const allPackages = data.getNestingPackages();
                 allPackages.push(data);
