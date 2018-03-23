@@ -439,6 +439,7 @@ export class CSharpWriter extends CodeWriter {
         if (typeof data == 'string') {
             lines.push(data);
         } else {
+            if (!data || data.length === 0) return;
             lines.push(...data.map((c: model.Comment) => c.body));
         }
         lines.push('</summary>')
