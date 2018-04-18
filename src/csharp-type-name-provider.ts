@@ -3,13 +3,18 @@
 import { DefaultTypeNameProvider } from '@yellicode/templating';
 
 export class CSharpTypeNameProvider extends DefaultTypeNameProvider {
-    protected /*override*/ getDataTypeName(type: model.DataType): string | null {
-        if (model.isPrimitiveBoolean(type)) return "bool";
-        if (model.isPrimitiveInteger(type)) return "int";
-        if (model.isPrimitiveReal(type)) return "double"; // By default, a real numeric literal on the right side of the assignment operator is treated as double (https://msdn.microsoft.com/en-us/library/b1e65aza.aspx)
-        if (model.isPrimitiveString(type)) return "string";
-        if (model.isPrimitiveObject(type)) return "object";
-        return super.getDataTypeName(type);
+    protected /*override*/ getDataTypeName(typedElement: model.TypedElement): string | null {
+        if (!typedElement || !typedElement.type)
+            return null;
+        
+        const t = typedElement.type;
+        if (model.isPrimitiveBoolean(t)) return "bool";
+        if (model.isPrimitiveInteger(t)) return "int";
+        if (model.isPrimitiveReal(t)) return "double"; // By default, a real numeric literal on the right side of the assignment operator is treated as double (https://msdn.microsoft.com/en-us/library/b1e65aza.aspx)
+        if (model.isPrimitiveString(t)) return "string";
+        if (model.isPrimitiveObject(t)) return "object";
+        
+        return super.getDataTypeName(typedElement);
     }
 
     public static canBeNullable(type: model.Type | null): boolean {

@@ -39,6 +39,8 @@ Enumerates the possible collection types to generated for properties and paramet
 
 ### CSharpTypeNameProvider.canBeNullable(type) : boolean
 * type: Type
+### CSharpTypeNameProvider.getDataTypeName(typedElement) : string
+* typedElement: TypedElement
 
 ## <a name="c-sharp-writer"></a> CSharpWriter class
 
@@ -203,6 +205,9 @@ Prefixes reserved C# keywords with a "@". This applies to:
 - Operation names
 - Operation parameter names
 
+### CSReservedKeywordTransform.rename(name, target) : string
+* name: string
+* target: Element
 
 ## <a name="enum-features"></a> EnumFeatures enumeration
 
@@ -273,7 +278,6 @@ Indicates if the method should be made virtual. The default value is false.
 ## <a name="namespace-features"></a> NamespaceFeatures enumeration
 
 * None
-* XmlDocSummary
 * All
 
 ## <a name="namespace-options"></a> NamespaceOptions interface

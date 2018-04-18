@@ -305,7 +305,7 @@ export class CSharpWriter extends CodeWriter {
             this.write('virtual ');
         }
         // Type
-        var typeName = this.getTypeName(property.type) || 'object';
+        var typeName = this.getTypeName(property) || 'object';
         if (property.isMultivalued()) {
             this.write(CSharpWriter.createCollectionType(typeName, options.collectionType));
         }
@@ -331,9 +331,10 @@ export class CSharpWriter extends CodeWriter {
     public getMethodReturnType(operation: model.Operation, options?: opts.MethodOptions): string {
         if (!operation) throw 'The operation is null or undefined.';
 
-        const returnType = operation.getReturnType();
-        if (!returnType) return 'void';
-        const typeName = this.getTypeName(returnType);
+        const returnParameter = operation.getReturnParameter();        
+        if (!returnParameter) return 'void';
+        
+        const typeName = this.getTypeName(returnParameter);
         if (!typeName) return 'void'; // the type could not be mapped 
         if (!options) options = {};
         return operation.isMultivalued() ? CSharpWriter.createCollectionType(typeName, options.collectionType) : typeName;
@@ -364,7 +365,7 @@ export class CSharpWriter extends CodeWriter {
             else if (p.direction === model.ParameterDirectionKind.inout) {
                 this.write('ref '); // The ref keyword can be used for both value- and reference types
             }
-            const typeName = this.getTypeName(p.type) || 'object';
+            const typeName = this.getTypeName(p) || 'object';
             if (p.isMultivalued()) {
                 this.write(CSharpWriter.createCollectionType(typeName, options!.collectionType));
             }
@@ -395,7 +396,8 @@ export class CSharpWriter extends CodeWriter {
     private writeGeneralizations(generalizations: model.Generalization[], additional: string[] | undefined): boolean {
         const allNames: string[] = [];
         if (generalizations) {
-            allNames.push(...generalizations.map(g => this.getTypeName(g.general)!));
+            // todo: allow qualifiedName and extend typeNameProvider with getGeneralTypeName?
+            allNames.push(...generalizations.map(g => g.general.name)); 
         }
         if (additional) {
             allNames.push(...additional);
@@ -411,7 +413,8 @@ export class CSharpWriter extends CodeWriter {
     private writeInterfaceRealizations(realizations: model.InterfaceRealization[], additional: string[] | undefined, hasGeneralizations: boolean): boolean {
         const allNames: string[] = [];
         if (realizations) {
-            allNames.push(...realizations.map(ir => this.getTypeName(ir.contract)!));
+            // todo: allow qualifiedName and extend typeNameProvider with getInterfaceTypeName?
+            allNames.push(...realizations.map(ir => ir.contract.name)); 
         }
         if (additional) {
             allNames.push(...additional);
@@ -424,10 +427,9 @@ export class CSharpWriter extends CodeWriter {
         return true;
     }
 
-    private getTypeName(type: model.Type | null): string | null {
-        if (!type) return null;
-        if (!this.typeNameProvider) return type.name;
-        return this.typeNameProvider.getTypeName(type);
+    private getTypeName(typedElement: model.TypedElement | null): string | null {
+        if (!typedElement) return null;
+        return this.typeNameProvider ? this.typeNameProvider.getTypeName(typedElement) : typedElement.getTypeName();        
     }
 
     //#region Xml Docs
