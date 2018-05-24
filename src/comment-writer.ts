@@ -1,5 +1,3 @@
-import * as model from '@yellicode/model';
-
 import { TextWriter, TypeNameProvider, CodeWriterUtility } from '@yellicode/templating';
 
 export class CSharpCommentWriter {

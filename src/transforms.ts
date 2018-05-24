@@ -1,4 +1,4 @@
-﻿import * as model from '@yellicode/model';
+﻿import * as elements from '@yellicode/elements';
 import { RenamingTransform, RenameTargets } from '@yellicode/templating';
 
 const reservedKeywords = ["abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal", "default", "delegate", "do", "double", "else",
@@ -20,7 +20,7 @@ export class CSReservedKeywordTransform extends RenamingTransform {
         super(targets);
     }
 
-    protected rename(name: string, target: model.Element): string {
+    protected rename(name: string, target: elements.Element): string {
         if (reservedKeywords.indexOf(name) === -1)
             return name;
 

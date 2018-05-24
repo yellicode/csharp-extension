@@ -1,4 +1,4 @@
-﻿import * as model from '@yellicode/model';
+﻿import * as elements from '@yellicode/elements';
 import * as opts from './options';
 import { CodeWriter, TextWriter, TypeNameProvider } from '@yellicode/templating';
 import { CSharpTypeNameProvider } from './csharp-type-name-provider';
@@ -50,7 +50,7 @@ export class CSharpWriter extends CodeWriter {
      * @param contents A callback function that writes the namespace contents.
      * @param options An optional NamespaceOptions object.
      */
-    public writeNamespaceBlock(pack: model.Package, contents: (writer: CSharpWriter) => void, options?: opts.NamespaceOptions): void;
+    public writeNamespaceBlock(pack: elements.Package, contents: (writer: CSharpWriter) => void, options?: opts.NamespaceOptions): void;
     public writeNamespaceBlock(name: string, contents: (writer: CSharpWriter) => void): void;
     public writeNamespaceBlock(data: any, contents: (writer: CSharpWriter) => void, options?: opts.NamespaceOptions): void {
         if (!data) return;
@@ -59,7 +59,7 @@ export class CSharpWriter extends CodeWriter {
         if (typeof data === 'string') {
             this.writeLine(`namespace ${data}`);
         }
-        else if (model.isPackage(data)) {           
+        else if (elements.isPackage(data)) {           
             if (options.writeFullName) {
                 const allPackages = data.getNestingPackages();
                 allPackages.push(data);
@@ -77,7 +77,7 @@ export class CSharpWriter extends CodeWriter {
      * @param contents A callback function that writes the class contents.
      * @param options An optional ClassOptions object.
      */
-    public writeClassBlock(cls: model.Class, contents: (writer: CSharpWriter) => void, options?: opts.ClassOptions) {
+    public writeClassBlock(cls: elements.Class, contents: (writer: CSharpWriter) => void, options?: opts.ClassOptions) {
         if (!cls) return;
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.ClassFeatures.All : options.features;
@@ -113,7 +113,7 @@ export class CSharpWriter extends CodeWriter {
     * @param contents A callback function that writes the interface contents.
     * @param options An optional InterfaceOptions object.
     */
-    public writeInterfaceBlock(iface: model.Interface, contents: (writer: CSharpWriter) => void, options?: opts.InterfaceOptions) {
+    public writeInterfaceBlock(iface: elements.Interface, contents: (writer: CSharpWriter) => void, options?: opts.InterfaceOptions) {
         if (!iface) return;
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.InterfaceFeatures.All : options.features;
@@ -143,7 +143,7 @@ export class CSharpWriter extends CodeWriter {
     * @param contents A callback function that writes the enumeration contents.
     * @param options An optional EnumerationOptions object.
     */
-    public writeEnumerationBlock(enumeration: model.Enumeration, contents: (writer: CSharpWriter) => void, options?: opts.EnumOptions) {
+    public writeEnumerationBlock(enumeration: elements.Enumeration, contents: (writer: CSharpWriter) => void, options?: opts.EnumOptions) {
         if (!enumeration) return;
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.EnumFeatures.All : options.features;
@@ -164,7 +164,7 @@ export class CSharpWriter extends CodeWriter {
     * @param element The enumeration.     
     * @param options An optional EnumOptions object.
     */
-    public writeEnumeration(enumeration: model.Enumeration, options?: opts.EnumOptions) {
+    public writeEnumeration(enumeration: elements.Enumeration, options?: opts.EnumOptions) {
         if (!enumeration) return;
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.EnumFeatures.All : options.features;
@@ -186,7 +186,7 @@ export class CSharpWriter extends CodeWriter {
      * @param literal The EnumerationLiteral for which to write the member.
      * @param options An optional EnumMemberOptions object.
      */
-    public writeEnumMember(literal: model.EnumerationLiteral, options?: opts.EnumMemberOptions) {
+    public writeEnumMember(literal: elements.EnumerationLiteral, options?: opts.EnumMemberOptions) {
         if (!literal) return;
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.EnumMemberFeatures.All : options.features;
@@ -212,7 +212,7 @@ export class CSharpWriter extends CodeWriter {
     * @param operation The operation for which to write the method.
     * @param options An optional MethodOptions object.
     */
-    public writeInterfaceMethod(operation: model.Operation, options?: opts.MethodOptions): void {
+    public writeInterfaceMethod(operation: elements.Operation, options?: opts.MethodOptions): void {
         if (!operation) return;
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.MethodFeatures.All : options.features;
@@ -241,7 +241,7 @@ export class CSharpWriter extends CodeWriter {
     * @param contents A callback function that writes the operation contents.
     * @param options An optional MethodOptions object.
     */
-    public writeClassMethodBlock(operation: model.Operation, contents: (writer: CSharpWriter) => void, options?: opts.MethodOptions): void {
+    public writeClassMethodBlock(operation: elements.Operation, contents: (writer: CSharpWriter) => void, options?: opts.MethodOptions): void {
         if (!operation) return;
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.MethodFeatures.All : options.features;
@@ -285,11 +285,11 @@ export class CSharpWriter extends CodeWriter {
  * Writes an auto property with a getter and (if the property is not ReadOnly) a setter.     
  * This function can be used for both Classes and Interfaces. 
  */
-    public writeAutoProperty(property: model.Property, options?: opts.PropertyOptions) {
+    public writeAutoProperty(property: elements.Property, options?: opts.PropertyOptions) {
         if (!property) return;
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.PropertyFeatures.All : options.features;
-        const ownerIsInterface = model.isInterface(property.owner);
+        const ownerIsInterface = elements.isInterface(property.owner);
 
         if (features & opts.PropertyFeatures.XmlDocSummary) {
             this.writeXmlDocSummary(property.ownedComments);
@@ -328,7 +328,7 @@ export class CSharpWriter extends CodeWriter {
      * @param operation The operation.
      * @param options An optional MethodOptions object.
      */
-    public getMethodReturnType(operation: model.Operation, options?: opts.MethodOptions): string {
+    public getMethodReturnType(operation: elements.Operation, options?: opts.MethodOptions): string {
         if (!operation) throw 'The operation is null or undefined.';
 
         const returnParameter = operation.getReturnParameter();        
@@ -345,24 +345,24 @@ export class CSharpWriter extends CodeWriter {
      * @param params A collection of parameters.
      * @param options An optional MethodOptions object.
      */
-    public writeInOutParameters(params: model.Parameter[], options?: opts.MethodOptions): void {
+    public writeInOutParameters(params: elements.Parameter[], options?: opts.MethodOptions): void {
         if (!params)
             return;
 
         if (!options) options = {};
 
         let i = 0;
-        params.forEach((p: model.Parameter) => {
-            if (p.direction === model.ParameterDirectionKind.return)
+        params.forEach((p: elements.Parameter) => {
+            if (p.direction === elements.ParameterDirectionKind.return)
                 return;
 
             if (i > 0) {
                 this.write(', ');
             }
-            if (p.direction === model.ParameterDirectionKind.out) {
+            if (p.direction === elements.ParameterDirectionKind.out) {
                 this.write('out ');
             }
-            else if (p.direction === model.ParameterDirectionKind.inout) {
+            else if (p.direction === elements.ParameterDirectionKind.inout) {
                 this.write('ref '); // The ref keyword can be used for both value- and reference types
             }
             const typeName = this.getTypeName(p) || 'object';
@@ -385,7 +385,7 @@ export class CSharpWriter extends CodeWriter {
     * not supported by C#, nothing will be written.
     * @param visibilityKind A VisibilityKind value. This value can be null.
     */
-    public writeAccessModifier(visibilityKind: model.VisibilityKind | null): void {
+    public writeAccessModifier(visibilityKind: elements.VisibilityKind | null): void {
         const accessModifierString = CSharpWriter.getAccessModifierString(visibilityKind);
         if (!accessModifierString)
             return;
@@ -393,7 +393,7 @@ export class CSharpWriter extends CodeWriter {
         this.writeWhiteSpace();
     }
 
-    private writeGeneralizations(generalizations: model.Generalization[], additional: string[] | undefined): boolean {
+    private writeGeneralizations(generalizations: elements.Generalization[], additional: string[] | undefined): boolean {
         const allNames: string[] = [];
         if (generalizations) {
             // todo: allow qualifiedName and extend typeNameProvider with getGeneralTypeName?
@@ -410,7 +410,7 @@ export class CSharpWriter extends CodeWriter {
         return true;
     }
 
-    private writeInterfaceRealizations(realizations: model.InterfaceRealization[], additional: string[] | undefined, hasGeneralizations: boolean): boolean {
+    private writeInterfaceRealizations(realizations: elements.InterfaceRealization[], additional: string[] | undefined, hasGeneralizations: boolean): boolean {
         const allNames: string[] = [];
         if (realizations) {
             // todo: allow qualifiedName and extend typeNameProvider with getInterfaceTypeName?
@@ -427,13 +427,13 @@ export class CSharpWriter extends CodeWriter {
         return true;
     }
 
-    private getTypeName(typedElement: model.TypedElement | null): string | null {
+    private getTypeName(typedElement: elements.TypedElement | null): string | null {
         if (!typedElement) return null;
         return this.typeNameProvider ? this.typeNameProvider.getTypeName(typedElement) : typedElement.getTypeName();        
     }
 
     //#region Xml Docs
-    public writeXmlDocSummary(comments: model.Comment[]): void;
+    public writeXmlDocSummary(comments: elements.Comment[]): void;
     public writeXmlDocSummary(text: string): void;
     public writeXmlDocSummary(data: any) {
         const lines: string[] = [];
@@ -442,17 +442,17 @@ export class CSharpWriter extends CodeWriter {
             lines.push(data);
         } else {
             if (!data || data.length === 0) return;
-            lines.push(...data.map((c: model.Comment) => c.body));
+            lines.push(...data.map((c: elements.Comment) => c.body));
         }
         lines.push('</summary>')
         this.commentWriter.writeCommentLines(lines, '/// ');
     }
 
-    public writeXmlDocParameters(element: model.Operation) {
+    public writeXmlDocParameters(element: elements.Operation) {
         this.writeXmlDocLines(XmlDocUtility.getXmlDocLinesForParameters(element.getInputParameters()));
     }
 
-    public writeXmlDocReturns(element: model.Operation) {
+    public writeXmlDocReturns(element: elements.Operation) {
         var returnParameter = element.getReturnParameter();
         if (!returnParameter) return;
 
@@ -493,15 +493,15 @@ export class CSharpWriter extends CodeWriter {
         });
     }
 
-    public static getAccessModifierString(visibility: model.VisibilityKind | null): string | null {
+    public static getAccessModifierString(visibility: elements.VisibilityKind | null): string | null {
         switch (visibility) {
-            case model.VisibilityKind.public:
+            case elements.VisibilityKind.public:
                 return 'public';
-            case model.VisibilityKind.private:
+            case elements.VisibilityKind.private:
                 return 'private';
-            case model.VisibilityKind.protected:
+            case elements.VisibilityKind.protected:
                 return 'protected';
-            case model.VisibilityKind.package:
+            case elements.VisibilityKind.package:
                 return 'internal';
             default:
                 return null;
