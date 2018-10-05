@@ -1,7 +1,12 @@
 {
   "name": "@yellicode/csharp",
   "version": "0.1.6",
-  "description": "C# extension for Yellicode - an extensible code generator.",  
+  "description": "C# extension for Yellicode - an extensible code generator.",
+  "keywords": [
+    "code generator",
+    "code generation",
+    "C#"
+  ],
   "license": "MIT",
   "main": "dist/bundles/csharp.umd.js",
   "module": "dist/es5/csharp.js",
@@ -11,17 +16,17 @@
     "type": "git",
     "url": "github:yellicode/csharp-extension.git"
   },
-  "dependencies": {   
+  "dependencies": {
     "@yellicode/elements": "^0.2.1",
-    "@yellicode/templating": "^0.3.1"
+    "@yellicode/templating": "^0.3.3"
   },
-  "devDependencies": {   
+  "devDependencies": {
     "rollup": "^0.50.0"
   },
   "scripts": {
-    "build:es5": "tsc",       
-    "build:es6": "tsc -m es6 -t es6 --outDir dist/es6 --declaration --declarationDir dist/types",       
-    "build:umd":"./node_modules/.bin/rollup --config rollup.config.js", 
+    "build:es5": "tsc",
+    "build:es6": "tsc -m es6 -t es6 --outDir dist/es6 --declaration --declarationDir dist/types",
+    "build:umd": "./node_modules/.bin/rollup --config rollup.config.js",
     "build:dist": "npm run build:es5 & npm run build:es6 & npm run build:umd",
     "build": "npm run build:dist",
     "prepublish": "npm run build:dist"
