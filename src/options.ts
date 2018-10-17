@@ -54,9 +54,9 @@ export interface ClassOptions {
      */
     features?: ClassFeatures;
     /**
-     * Indicates if the "partial" prefix must be omitted. The default is false.
+     * Indicates if the class must be prefixed with the "partial" keyword.
     */
-    noPartial?: boolean;
+    isPartial?: boolean;
     /**
      * Any additional interface names that the class should implement.
      */
@@ -80,10 +80,10 @@ export interface InterfaceOptions {
      * Defines the class features to write. The default is InterfaceFeatures.All.
      */
     features?: InterfaceFeatures;
-    /**
-     * Indicates if the "partial" prefix must be omitted. The default is false.
+   /**
+     * Indicates if the interface must be prefixed with the "partial" keyword.
     */
-    noPartial?: boolean;
+    isPartial?: boolean;
     /**
     * Any additional interface names that the interface should inherit from.
     */

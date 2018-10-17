@@ -91,7 +91,7 @@ export class CSharpWriter extends CodeWriter {
         if (cls.isAbstract) {
             this.write('abstract ');
         }
-        if (options.noPartial !== true) {
+        if (options.isPartial) {
             this.write('partial ');
         }
         this.write(`class ${cls.name}`);
@@ -124,7 +124,7 @@ export class CSharpWriter extends CodeWriter {
 
         this.writeIndent();
         this.writeAccessModifier(iface.visibility);
-        if (options.noPartial !== true) {
+        if (options.isPartial) {
             this.write('partial ');
         }
         this.write(`interface ${iface.name}`);
