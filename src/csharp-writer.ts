@@ -282,12 +282,40 @@ export class CSharpWriter extends CodeWriter {
     }
 
     /**
- * Writes an auto property with a getter and (if the property is not ReadOnly) a setter.     
- * This function can be used for both Classes and Interfaces. 
- */
+     * Writes an auto property with a getter and (if the property is not ReadOnly) a setter.     
+     * This function can be used for both Classes and Interfaces. 
+     */
     public writeAutoProperty(property: elements.Property, options?: opts.PropertyOptions) {
         if (!property) return;
         if (!options) options = {};
+
+        this.writePropertyStart(property, options);
+        this.write(property.isReadOnly ? ' {get;}' : ' {get; set;}');
+        this.writeEndOfLine();
+    }
+
+    /**
+     * Writes a property code block using optional callback functions for writing the getter and setter contents.
+     */
+    public writePropertyBlock(property: elements.Property, getterContents: () => void | null, setterContents: () => void | null, options?: opts.PropertyOptions): void {
+        if (!property) return;
+        if (options == null) options = {};
+        
+        this.writePropertyStart(property, options);
+        this.writeEndOfLine();
+        this.writeCodeBlock(() => {
+            if (getterContents) {
+                this.writeLine('get')
+                this.writeCodeBlock(getterContents);
+            }
+            if (setterContents) {
+                this.writeLine('set')
+                this.writeCodeBlock(setterContents);
+            }    
+        });
+    }
+
+    private writePropertyStart(property: elements.Property, options: opts.PropertyOptions): void {
         const features = (options.features === undefined) ? opts.PropertyFeatures.All : options.features;
         const ownerIsInterface = elements.isInterface(property.owner);
 
@@ -317,8 +345,6 @@ export class CSharpWriter extends CodeWriter {
         }
         // Name               
         this.write(` ${property.name}`);
-        this.write(property.isReadOnly ? ' {get;}' : ' {get; set;}');
-        this.writeEndOfLine();
     }
 
     /**
