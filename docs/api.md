@@ -1,22 +1,37 @@
 ## Contents
+* [ClassDefinition](#class-definition) interface
 * [ClassOptions](#class-options) interface
 * [CollectionType](#collection-type) enumeration
 * [CSharpTypeNameProvider](#c-sharp-type-name-provider) class
 * [CSharpWriter](#c-sharp-writer) class
 * [CSReservedKeywordTransform](#cs-reserved-keyword-transform) class
+* [DefinitionBase](#definition-base) interface
 * [EnumFeatures](#enum-features) enumeration
 * [EnumMemberFeatures](#enum-member-features) enumeration
 * [EnumMemberOptions](#enum-member-options) interface
 * [EnumOptions](#enum-options) interface
+* [InterfaceDefinition](#interface-definition) interface
 * [InterfaceFeatures](#interface-features) enumeration
 * [InterfaceOptions](#interface-options) interface
 * [MethodFeatures](#method-features) enumeration
 * [MethodOptions](#method-options) interface
+* [ModelBuilder](#model-builder) class
 * [NamespaceFeatures](#namespace-features) enumeration
 * [NamespaceOptions](#namespace-options) interface
 * [PropertyFeatures](#property-features) enumeration
 * [PropertyOptions](#property-options) interface
+* [TypeDefinition](#type-definition) interface
 * [WriterOptions](#writer-options) interface
+## <a name="class-definition"></a> ClassDefinition interface
+
+### ClassDefinition.accessModifier: any
+### ClassDefinition.name: string
+### ClassDefinition.xmlDocSummary: string
+### ClassDefinition.inherits: string
+### ClassDefinition.isPartial: boolean
+### ClassDefinition.implements: string
+### ClassDefinition.isAbstract: boolean
+
 ## <a name="class-options"></a> ClassOptions interface
 
 ### ClassOptions.features: ClassFeatures
@@ -25,8 +40,8 @@ Defines the class features to write. The default is ClassFeatures.All.
 Any additional interface names that the class should implement.
 ### ClassOptions.inherits: string
 Any additional class names that the class should inherit from.
-### ClassOptions.noPartial: boolean
-Indicates if the "partial" prefix must be omitted. The default is false.
+### ClassOptions.isPartial: boolean
+Indicates if the class must be prefixed with the "partial" keyword.
 
 ## <a name="collection-type"></a> CollectionType enumeration
 Enumerates the possible collection types to generated for properties and parameters.
@@ -178,6 +193,12 @@ Writes an indented block of code, wrapped in a namespace declaration and opening
 * options: [NamespaceOptions](#namespace-options)
 
    An optional NamespaceOptions object.
+### CSharpWriter.writePropertyBlock(property, getterContents, setterContents, options) : void
+Writes a property code block using optional callback functions for writing the getter and setter contents.
+* property: Property
+* getterContents: () => void
+* setterContents: () => void
+* options: [PropertyOptions](#property-options)
 ### CSharpWriter.writeUsingDirectives(values) : void
 Writes 1 or more using directives, each on a new line.
 * values: string
@@ -209,6 +230,12 @@ Prefixes reserved C# keywords with a "@". This applies to:
 * name: string
 * target: Element
 
+## <a name="definition-base"></a> DefinitionBase interface
+
+### DefinitionBase.accessModifier: any
+### DefinitionBase.name: string
+### DefinitionBase.xmlDocSummary: string
+
 ## <a name="enum-features"></a> EnumFeatures enumeration
 
 * None
@@ -237,6 +264,14 @@ Prefixes reserved C# keywords with a "@". This applies to:
 
 ### EnumOptions.features: EnumFeatures
 
+## <a name="interface-definition"></a> InterfaceDefinition interface
+
+### InterfaceDefinition.accessModifier: any
+### InterfaceDefinition.name: string
+### InterfaceDefinition.xmlDocSummary: string
+### InterfaceDefinition.inherits: string
+### InterfaceDefinition.isPartial: boolean
+
 ## <a name="interface-features"></a> InterfaceFeatures enumeration
 
 * None
@@ -251,8 +286,8 @@ Prefixes reserved C# keywords with a "@". This applies to:
 Defines the class features to write. The default is InterfaceFeatures.All.
 ### InterfaceOptions.inherits: string
 Any additional interface names that the interface should inherit from.
-### InterfaceOptions.noPartial: boolean
-Indicates if the "partial" prefix must be omitted. The default is false.
+### InterfaceOptions.isPartial: boolean
+Indicates if the interface must be prefixed with the "partial" keyword.
 
 ## <a name="method-features"></a> MethodFeatures enumeration
 
@@ -274,6 +309,15 @@ Sets the collection type to be generated for parameters in case they are multi-v
 Sets the MethodFeatures. The default is MethodFeatures.All.
 ### MethodOptions.virtual: boolean
 Indicates if the method should be made virtual. The default value is false. 
+
+## <a name="model-builder"></a> ModelBuilder class
+
+### ModelBuilder.buildClassDefinition(type, options) : ClassDefinition
+* type: Type
+* options: [ClassOptions](#class-options)
+### ModelBuilder.buildInterfaceDefinition(type, options) : InterfaceDefinition
+* type: Type
+* options: [InterfaceOptions](#interface-options)
 
 ## <a name="namespace-features"></a> NamespaceFeatures enumeration
 
@@ -308,6 +352,14 @@ Sets the collection type to be generated for the property in case it is multi-va
 Defines the property features to write. The default is PropertyFeatures.All.
 ### PropertyOptions.virtual: boolean
 Indicates if the property should be made virtual. The default value is false. 
+
+## <a name="type-definition"></a> TypeDefinition interface
+
+### TypeDefinition.accessModifier: any
+### TypeDefinition.name: string
+### TypeDefinition.xmlDocSummary: string
+### TypeDefinition.inherits: string
+### TypeDefinition.isPartial: boolean
 
 ## <a name="writer-options"></a> WriterOptions interface
 
