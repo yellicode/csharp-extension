@@ -290,7 +290,7 @@ export class CSharpWriter extends CodeWriter {
         if (!options) options = {};
 
         this.writePropertyStart(property, options);
-        this.write(property.isReadOnly ? ' {get;}' : ' {get; set;}');
+        this.write(property.isReadOnly || property.isDerived ? ' {get;}' : ' {get; set;}');
         this.writeEndOfLine();
     }
 
