@@ -452,10 +452,30 @@ export class CSharpWriter extends CodeWriter {
         this.joinWrite(allNames, ', ', name => name);
         return true;
     }
-
-    private getTypeName(typedElement: elements.TypedElement | null): string | null {
-        if (!typedElement) return null;
-        return this.typeNameProvider ? this.typeNameProvider.getTypeName(typedElement) : typedElement.getTypeName();        
+   
+    /**
+     * Gets the name of the type. This function uses the current typeNameProvider for resolving
+     * the type name.
+     * @param type Any element that derives from Type.
+     */
+    public getTypeName(type: elements.Type | null): string | null;
+    /**
+    * Gets the type name of the typed element. This function uses the current typeNameProvider for resolving
+    * the type name.
+    * @param typedElement Any element that has a type, such as a Property or Parameter.
+    */
+    public getTypeName(typedElement: elements.TypedElement | null): string | null;
+    public getTypeName(element: any | null): string | null {
+        if (!element)
+            return null;
+            
+        if (elements.isTypedElement(element)) {
+            return this.typeNameProvider ? this.typeNameProvider.getTypeName(element) : element.getTypeName();
+        }
+        else if (elements.isType(element)) {
+            return this.typeNameProvider ? this.typeNameProvider.getTypeName(element) : element.name;
+        }
+        return null;
     }
 
     //#region Xml Docs
