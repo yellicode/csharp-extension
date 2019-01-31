@@ -46,7 +46,7 @@ The second overload accepts a [class](https://www.yellicode.com/docs/api/model/c
 object to control code generation (internally, the Yellicode class is transformed to a `ClassDefinition`). 
 
 ## Examples
-*Note: a ZIP archive with working examples is also [available here](yellicode-csharp-examples.zip).*
+*Note: a ZIP archive with working examples is also [available for download here](https://github.com/yellicode/yellicode-csharp/blob/master/examples/yellicode-csharp-examples.zip).*
 
 ### Example using a C# code definition
 This sample creates a simple C# definition of a *Task* class, which is then provided to the  `CSharpWriter`. You would typically create this definition from another
