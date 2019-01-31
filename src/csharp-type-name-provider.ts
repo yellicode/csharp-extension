@@ -18,6 +18,8 @@ export class CSharpTypeNameProvider extends DefaultTypeNameProvider {
     }
 
     public static canBeNullable(type: elements.Type | null): boolean {
+        // TODO: this function should use the mapped type name!
+        
         if (!type || type.name == null || elements.isPrimitiveString(type) || elements.isPrimitiveObject(type))
             return false;  // type has no name or is already nullable
 

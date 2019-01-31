@@ -45,6 +45,9 @@ export enum ClassFeatures {
     Generalizations = 1 << 1,
     InterfaceRealizations = 1 << 2,
     All = XmlDocSummary | Generalizations | InterfaceRealizations,
+    /**
+     * @deprecated This value will be deprecated in the future.
+     */
     AllExceptXmlDocs = Generalizations | InterfaceRealizations
 }
 
@@ -65,6 +68,28 @@ export interface ClassOptions {
      * Any additional class names that the class should inherit from.
      */
     inherits?: string[];
+}
+
+export enum StructFeatures {
+    None = 0,
+    XmlDocSummary = 1 << 0,    
+    InterfaceRealizations = 1 << 1,
+    All = XmlDocSummary | InterfaceRealizations
+}
+
+export interface StructOptions {
+    /**
+    * Defines the struct features to write. The default is StructFeatures.All.
+    */
+    features?: StructFeatures;
+    /**
+     * Indicates if the struct must be prefixed with the "partial" keyword.
+    */
+    isPartial?: boolean;
+    /**
+     * Any additional interface names that the struct should implement.
+     */
+    implements?: string[];
 }
 
 export enum InterfaceFeatures {
@@ -97,8 +122,7 @@ export enum EnumFeatures {
      * Writes enumeration member initializers. This flag only applies when values are provided in the model.
      */
     Initializers = 1 << 1,
-    All = XmlDocSummary | Initializers,
-    AllExceptXmlDocs = Initializers
+    All = XmlDocSummary | Initializers  
 }
 
 export enum EnumMemberFeatures {
@@ -108,8 +132,8 @@ export enum EnumMemberFeatures {
      * Writes enumeration member initializers. This flag only applies when values are provided in the model.
      */
     Initializers = 1 << 1,
-    All = XmlDocSummary | Initializers,
-    AllExceptXmlDocs = Initializers
+    All = XmlDocSummary | Initializers
+  
 }
 
 export interface EnumOptions {
@@ -173,4 +197,8 @@ export interface MethodOptions {
      * Indicates if the method should be made virtual. The default value is false. 
      */
     virtual?: boolean;
+    /**
+     * Indicates if the method must be prefixed with the "partial" keyword.
+    */
+    isPartial?: boolean;
 }
