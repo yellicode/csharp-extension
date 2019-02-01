@@ -81,7 +81,7 @@ export class DefinitionBuilder {
         // Build the member-specific definition
         definition.isLast = isLast || false;
 
-        if (buildInitializers && literal.specification) {
+        if (buildInitializers && literal.specification != null) { // using '!=' on purpose  
             const specification = literal.specification;
             definition.value = elements.isLiteralInteger(specification) ? specification.value : undefined;
         }

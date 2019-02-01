@@ -280,7 +280,7 @@ export class CSharpWriter extends CodeWriter {
 
         this.writeIndent();
         this.write(definition.name);
-        if (definition.value) {
+        if (definition.value != null) { // using '!=' on purpose  
             this.write(` = ${definition.value}`);
         }
         if (!isLast) {
