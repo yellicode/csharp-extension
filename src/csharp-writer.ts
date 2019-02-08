@@ -283,7 +283,7 @@ export class CSharpWriter extends CodeWriter {
         if (definition.value != null) { // using '!=' on purpose  
             this.write(` = ${definition.value}`);
         }
-        if (!isLast) {
+        if (!definition.isLast) {
             this.write(',');
         }
         this.writeEndOfLine();
@@ -469,10 +469,20 @@ export class CSharpWriter extends CodeWriter {
             this.definitionBuilder.buildPropertyDefinition(data, options) :
             data;
 
+        if (definition.hasGetter != null) {
+            console.warn('PropertyDefinition.hasGetter is deprecated. A getter is now written by default. Please use noGetter if you want to omit it.');
+        }
+        if (definition.hasSetter != null) {
+            console.warn('PropertyDefinition.hasSetter is deprecated. A setter is now written by default. Please use noSetter if you want to omit it.');
+        }
+        
         this.writePropertyStart(definition);
         this.write(' { ');
-        if (definition.hasGetter) this.write('get;');
-        if (definition.hasSetter) this.write('set;');
+        if (!definition.noGetter) this.write('get;');
+        if (!definition.noSetter) {
+            if (!definition.noGetter) this.write(' ');
+            this.write('set;');
+        };
         this.writeEndOfLine(' }');             
     }
 

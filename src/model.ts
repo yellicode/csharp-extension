@@ -227,12 +227,22 @@ export interface PropertyDefinition extends DefinitionBase {
     accessModifier?: AccessModifier;
     /**
      * Indicates if a property getter should be written. The default value is false.
+     * @deprecated A getter is now written by default. Please use noGetter if you want to omit the getter. 
      */
     hasGetter?: boolean;
     /**
+     * Indicates if a property getter should be omitted. By default, a getter will be written. 
+     */
+    noGetter?: boolean;
+    /**
      * Indicates if a property setter should be written. The default value is false.
+     * @deprecated A setter is now written by default. Please use noSetter if you want to omit the setter. 
      */
     hasSetter?: boolean;
+    /**
+     * Indicates if a property setter should be omitted. By default, a setter will be written.
+     */
+    noSetter?: boolean;
     /**
      * Indicates if the property should be a virtual property.
      */

@@ -69,8 +69,8 @@ Generator.generateFromModel({ outputFile: './custom-sample.cs' }, (output: TextW
     };
 
     classDefinition.properties = [
-        { name: 'TaskDescription', typeName: 'string', accessModifier: 'public', hasGetter: true, hasSetter: true, xmlDocSummary: ['Gets or sets a description of the task.'] },
-        { name: 'IsFinished', typeName: 'bool', accessModifier: 'public', hasGetter: true, hasSetter: true, xmlDocSummary: ['Indicates if the task is finished.'] }
+        { name: 'TaskDescription', typeName: 'string', accessModifier: 'public', xmlDocSummary: ['Gets or sets a description of the task.'] },
+        { name: 'IsFinished', typeName: 'bool', accessModifier: 'public', xmlDocSummary: ['Indicates if the task is finished.'] }
     ];
 
     // Write the namespace, the classes and its properties

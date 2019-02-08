@@ -144,8 +144,8 @@ export class DefinitionBuilder {
             CSharpTypeNameProvider.canBeNullable(property.type)) {
             definition.isNullable = true;
         }
-        definition.hasGetter = true;
-        definition.hasSetter = !property.isReadOnly && !property.isDerived;
+        
+        definition.noSetter = property.isReadOnly || property.isDerived;       
 
         return definition;        
     }
