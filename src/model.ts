@@ -222,7 +222,7 @@ export interface PropertyDefinition extends DefinitionBase {
       */
     typeName: string;
     /**
-     * Gets the prooperty's access modifier. By default, no access modifier will be written.
+     * Gets the property's access modifier. By default, no access modifier will be written.
      */
     accessModifier?: AccessModifier;
     /**

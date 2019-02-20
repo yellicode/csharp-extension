@@ -133,15 +133,16 @@ export class DefinitionBuilder {
         );
 
         // Build the property-specific definition
+        const typename = this.getFullTypeName(property, options.collectionType || null, 'object')!;
         definition.accessModifier = DefinitionBuilder.getAccessModifierString(property.visibility);
         definition.isVirtual = options.virtual;
-        definition.typeName = this.getFullTypeName(property, options.collectionType || null, 'object')!;
+        definition.typeName = typename;
+
         if (!ownerIsInterface && (features & opts.PropertyFeatures.AccessModifier)) definition.accessModifier = DefinitionBuilder.getAccessModifierString(property.visibility);               
 
         if ((features & opts.PropertyFeatures.OptionalModifier) && 
-            property.lower === 0 && 
-            !property.isMultivalued() && 
-            CSharpTypeNameProvider.canBeNullable(property.type)) {
+            property.lower === 0 &&             
+            CSharpTypeNameProvider.canBeNullable(property, typename)) {
             definition.isNullable = true;
         }
         
@@ -196,12 +197,12 @@ export class DefinitionBuilder {
 
         params.forEach(p => {
             if (p.direction === ParameterDirectionKind.return) return;
-
+            const typeName = this.getFullTypeName(p, options!.collectionType || null, 'object')!;
             const paramDefinition: ParameterDefinition = DefinitionBuilder.buildDefinitionBase<ParameterDefinition>(p, !!(features & opts.MethodFeatures.XmlDocParameters));
             paramDefinition.isOutput = p.direction === elements.ParameterDirectionKind.out;
             paramDefinition.isReference = p.direction === elements.ParameterDirectionKind.inout;
-            paramDefinition.isNullable = p.lower === 0 && !p.isMultivalued() && CSharpTypeNameProvider.canBeNullable(p.type);
-            paramDefinition.typeName = this.getFullTypeName(p, options!.collectionType || null, 'object')!;
+            paramDefinition.isNullable = p.lower === 0 && CSharpTypeNameProvider.canBeNullable(p, typeName);
+            paramDefinition.typeName = typeName;
             inOutParameters.push(paramDefinition);
         });
         return inOutParameters;

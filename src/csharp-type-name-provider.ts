@@ -17,12 +17,28 @@ export class CSharpTypeNameProvider extends DefaultTypeNameProvider {
         return super.getTypeNameForType(type, isDataType);
     }
 
-    public static canBeNullable(type: elements.Type | null): boolean {
-        // TODO: this function should use the mapped type name!
-        
-        if (!type || type.name == null || elements.isPrimitiveString(type) || elements.isPrimitiveObject(type))
-            return false;  // type has no name or is already nullable
+    public static canBeNullable(typedElement: elements.TypedElement, csTypeName: string): boolean {
+        if (!typedElement || !csTypeName) 
+            return false;
+
+        // A collection cannot be nullable
+        if (elements.isMultiplicityElement(typedElement) && typedElement.isMultivalued()){
+            return false;
+        }
+
+        // Check the mapped type name (it could come from a custom TypeNameProvider) 
+        switch (csTypeName) { // the following cannot be nullable:
+            case 'string':
+            case 'System.String':
+            case 'object':
+            case 'System.Object':
+                return false;
+        }
+
+        // Check the type itself
+        const type = typedElement.type;
+        if (!type) return false;
 
         return elements.isEnumeration(type) || elements.isDataType(type); // isDataType includes PrimitiveType      
-    }
+    }   
 }
