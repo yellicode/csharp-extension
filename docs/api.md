@@ -6,7 +6,6 @@
 * [CSharpWriter](#c-sharp-writer) class
 * [CSReservedKeywordTransform](#cs-reserved-keyword-transform) class
 * [DefinitionBase](#definition-base) interface
-* [DefinitionBuilder](#definition-builder) class
 * [EnumDefinition](#enum-definition) interface
 * [EnumFeatures](#enum-features) enumeration
 * [EnumMemberDefinition](#enum-member-definition) interface
@@ -78,8 +77,9 @@ Enumerates the possible collection types to generated for properties and paramet
 
 ## <a name="c-sharp-type-name-provider"></a> CSharpTypeNameProvider class
 
-### CSharpTypeNameProvider.canBeNullable(type) : boolean
-* type: Type
+### CSharpTypeNameProvider.canBeNullable(typedElement, csTypeName) : boolean
+* typedElement: TypedElement
+* csTypeName: string
 ### CSharpTypeNameProvider.getTypeNameForType(type, isDataType) : string
 * type: Type
 * isDataType: boolean
@@ -423,39 +423,6 @@ Get or sets the name of the code element. This field is required.
 Gets the XML documentation summary of the element. Each string in this
 array will be written on a new line. This field is optional.
 
-## <a name="definition-builder"></a> DefinitionBuilder class
-
-### DefinitionBuilder.buildClassDefinition(type, options) : ClassDefinition
-* type: Type
-* options: [ClassOptions](#class-options)
-### DefinitionBuilder.buildEnumDefinition(type, options) : EnumDefinition
-* type: Type
-* options: [EnumOptions](#enum-options)
-### DefinitionBuilder.buildEnumMemberDefinition(literal, isLast, options) : EnumMemberDefinition
-* literal: EnumerationLiteral
-* isLast: boolean
-* options: [EnumMemberOptions](#enum-member-options)
-### DefinitionBuilder.buildInterfaceDefinition(type, options) : InterfaceDefinition
-* type: Type
-* options: [InterfaceOptions](#interface-options)
-### DefinitionBuilder.buildMethodDefinition(operation, options) : MethodDefinition
-* operation: Operation
-* options: [MethodOptions](#method-options)
-### DefinitionBuilder.buildNamespaceDefinition(pack, options) : NamespaceDefinition
-* pack: Package
-* options: [NamespaceOptions](#namespace-options)
-### DefinitionBuilder.buildParameterDefinitions(params, options) : ParameterDefinition
-* params: Parameter
-* options: [MethodOptions](#method-options)
-### DefinitionBuilder.buildPropertyDefinition(property, options) : PropertyDefinition
-* property: Property
-* options: [PropertyOptions](#property-options)
-### DefinitionBuilder.buildStructDefinition(type, options) : StructDefinition
-* type: Type
-* options: [StructOptions](#struct-options)
-### DefinitionBuilder.getAccessModifierString(visibility) : void
-* visibility: VisibilityKind
-
 ## <a name="enum-definition"></a> EnumDefinition interface
 Represents a C# enumeration.
 
@@ -655,7 +622,7 @@ Get or sets the name of the code element. This field is required.
 Gets the XML documentation summary of the element. Each string in this
 array will be written on a new line. This field is optional.
 ### PropertyDefinition.accessModifier: any
-Gets the prooperty's access modifier. By default, no access modifier will be written.
+Gets the property's access modifier. By default, no access modifier will be written.
 ### PropertyDefinition.hasGetter: boolean
 Indicates if a property getter should be written. The default value is false.
 ### PropertyDefinition.hasSetter: boolean
@@ -665,6 +632,10 @@ Indicates if the property should be nullable. The caller should ensure that
 the type specified by typeName is a nullable type. The default value is false.
 ### PropertyDefinition.isVirtual: boolean
 Indicates if the property should be a virtual property.
+### PropertyDefinition.noGetter: boolean
+Indicates if a property getter should be omitted. By default, a getter will be written. 
+### PropertyDefinition.noSetter: boolean
+Indicates if a property setter should be omitted. By default, a setter will be written.
 ### PropertyDefinition.typeName: string
 The full type name of the property. If the type is a collection,
 the collection must be part of the name (e.g. 'List<string>').
