@@ -241,10 +241,6 @@ export class CSharpWriter extends CodeWriter {
             this.definitionBuilder.buildEnumDefinition(data, options) :
             data;
 
-        if (definition.xmlDocSummary) {
-            this.writeXmlDocSummary(definition.xmlDocSummary);
-        }
-
         this.writeEnumerationBlock(definition, () => {
             if (definition.members) {
                 definition.members.forEach(memberDefinition => {
