@@ -61,6 +61,11 @@ export interface ClassOptions {
     */
     isPartial?: boolean;
     /**
+     * Indicates if the class should be made abstract. 
+     * By default, the value of the 'Abstract' class setting in the model is used.
+     */
+    isAbstract?: boolean;
+    /**
      * Any additional interface names that the class should implement.
      */
     implements?: string[];
@@ -196,7 +201,12 @@ export interface MethodOptions {
     /**
      * Indicates if the method should be made virtual. The default value is false. 
      */
-    virtual?: boolean;
+    isVirtual?: boolean;    
+    /**
+     * Indicates if the method should be made abstract. 
+     * By default, the value of the 'Abstract' operation setting in the model is used.
+     */
+    isAbstract?: boolean;
     /**
      * Indicates if the method must be prefixed with the "partial" keyword.
     */

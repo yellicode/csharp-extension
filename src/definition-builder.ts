@@ -35,7 +35,7 @@ export class DefinitionBuilder {
         definition.inherits = DefinitionBuilder.buildInherits(type, options.inherits);
         definition.implements = DefinitionBuilder.buildImplements(type, options.implements);
         if (elements.isClass(type)) {
-            definition.isAbstract = type.isAbstract;
+            definition.isAbstract = type.isAbstract || options.isAbstract;
         }
         return definition;
     }
@@ -166,8 +166,8 @@ export class DefinitionBuilder {
         definition.isPartial = options.isPartial;
 
         if (!operation.isConstructor) {
-            definition.isAbstract = !options.virtual && operation.isAbstract;
-            definition.isVirtual = options.virtual;        
+            definition.isAbstract = options.isAbstract || (!options.isVirtual && operation.isAbstract);
+            definition.isVirtual = options.isVirtual;
         }
         if (!ownerIsInterface) definition.accessModifier = DefinitionBuilder.getAccessModifierString(operation.visibility);        
         

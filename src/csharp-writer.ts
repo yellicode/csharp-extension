@@ -322,10 +322,23 @@ export class CSharpWriter extends CodeWriter {
        
         this.writeIndent();
 
-        if (definition.isPartial) { 
+        if (!definition.isPartial) { 
+            this.writeAccessModifier(definition); // Partial methods are implicitly private                  
+        }
+        
+        if (definition.isStatic) {
+            this.write('static ');
+        }
+        else if (definition.isAbstract) {
+            this.write('abstract ');
+        }
+        else if (definition.isVirtual) {
+            this.write('virtual ');
+        }
+        if (definition.isPartial) {
             this.write('partial ');
         }
-
+      
         if (definition.isPartial) this.write('void '); // partial methods must return void, intentional trailing white space
         else this.write(`${definition.returnTypeName || 'void'} `); // intentional trailing white space
                 
@@ -376,8 +389,7 @@ export class CSharpWriter extends CodeWriter {
         // Start of the actual method      
         this.writeIndent();
         if (!definition.isPartial) { 
-            this.writeAccessModifier(definition); // Partial methods are implicitly private      
-            
+            this.writeAccessModifier(definition); // Partial methods are implicitly private                  
         }
         
         if (definition.isStatic) {
