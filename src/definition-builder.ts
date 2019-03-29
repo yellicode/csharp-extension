@@ -239,9 +239,9 @@ export class DefinitionBuilder {
         return allNames.length ? allNames : undefined;
     }
 
-    private static buildXmlDocSummary(element: elements.Element): string[] | undefined {
+    public static buildXmlDocSummary(element: elements.Element): string[] | undefined {
         if (!element.ownedComments || !element.ownedComments.length) {
-            return;
+            return undefined;
         }
 
         return element.ownedComments.map(c => c.body);

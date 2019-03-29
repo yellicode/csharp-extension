@@ -639,9 +639,14 @@ export class CSharpWriter extends CodeWriter {
     //#region Xml Docs
     public writeXmlDocSummary(comments: string[]): void;
     public writeXmlDocSummary(text: string): void;
-    public writeXmlDocSummary(data: any) {
-        if (!data) return;
+    public writeXmlDocSummary(element: elements.Element): void;
+    public writeXmlDocSummary(data: any) {        
+        if (elements.isNamedElement(data)) { // we have no isElement check, but this will do            
+            data = DefinitionBuilder.buildXmlDocSummary(data);
+        }
 
+        if (!data) return;
+        
         const lines: string[] = [];
         lines.push('<summary>')
         if (typeof data == 'string') {
