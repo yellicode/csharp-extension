@@ -44,11 +44,7 @@ export enum ClassFeatures {
     XmlDocSummary = 1 << 0,
     Generalizations = 1 << 1,
     InterfaceRealizations = 1 << 2,
-    All = XmlDocSummary | Generalizations | InterfaceRealizations,
-    /**
-     * @deprecated This value will be deprecated in the future.
-     */
-    AllExceptXmlDocs = Generalizations | InterfaceRealizations
+    All = XmlDocSummary | Generalizations | InterfaceRealizations    
 }
 
 export interface ClassOptions {
@@ -101,8 +97,7 @@ export enum InterfaceFeatures {
     None = 0,
     XmlDocSummary = 1 << 0,
     Generalizations = 1 << 1,
-    All = XmlDocSummary | Generalizations,
-    AllExceptXmlDocs = Generalizations
+    All = XmlDocSummary | Generalizations    
 }
 
 export interface InterfaceOptions {
@@ -157,8 +152,7 @@ export enum PropertyFeatures {
      */
     AccessModifier = 1 << 1,
     OptionalModifier = 1 << 2,
-    All = XmlDocSummary | AccessModifier | OptionalModifier,
-    AllExceptXmlDocs = AccessModifier | OptionalModifier
+    All = XmlDocSummary | AccessModifier | OptionalModifier    
 }
 
 export interface PropertyOptions {
@@ -185,8 +179,7 @@ export enum MethodFeatures {
     * The access modifier if the owner is not an Interface.
     */
     AccessModifier = 1 << 3,
-    All = XmlDocSummary | XmlDocParameters | XmlDocReturns | AccessModifier,
-    AllExceptXmlDocs = AccessModifier
+    All = XmlDocSummary | XmlDocParameters | XmlDocReturns | AccessModifier    
 }
 
 export interface MethodOptions {
