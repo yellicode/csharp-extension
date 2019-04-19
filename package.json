@@ -1,6 +1,6 @@
 {
   "name": "@yellicode/csharp",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "C# extension for Yellicode - an extensible code generator.",
   "keywords": [
     "code generator",
