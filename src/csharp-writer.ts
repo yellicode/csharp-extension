@@ -472,6 +472,9 @@ export class CSharpWriter extends CodeWriter {
                 this.write('?');
             }
             this.write(` ${p.name}`);
+            if (p.defaultValue) {
+                this.write(` = ${p.defaultValue}`);
+            }
             i++;
         });
         return this;

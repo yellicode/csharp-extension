@@ -203,6 +203,7 @@ export class DefinitionBuilder {
             paramDefinition.isReference = p.direction === elements.ParameterDirectionKind.inout;
             paramDefinition.isNullable = p.lower === 0 && CSharpTypeNameProvider.canBeNullable(p, typeName);
             paramDefinition.typeName = typeName;
+            paramDefinition.defaultValue = DefinitionBuilder.getDefaultValueString(p.defaultValue),
             inOutParameters.push(paramDefinition);
         });
         return inOutParameters;
@@ -267,6 +268,15 @@ export class DefinitionBuilder {
         return definition as TDefinition;
     }
 
+    private static getDefaultValueString(defaultValue: elements.ValueSpecification | null): string | undefined {
+        if (!defaultValue) 
+            return undefined;
+        
+        return elements.isLiteralString(defaultValue) ? 
+            `"${defaultValue.value}"` : 
+            defaultValue.getStringValue();
+    }
+
     public static getAccessModifierString(visibility: elements.VisibilityKind | null): AccessModifier | undefined {
         switch (visibility) {
             case elements.VisibilityKind.public:
@@ -281,7 +291,7 @@ export class DefinitionBuilder {
                 return undefined;
         }
     }
-
+    
     private getFullTypeName(typedElement: elements.TypedElement, collectionType: opts.CollectionType | null, fallback?: string): string | undefined {
         const typeName = this.typeNameProvider.getTypeName(typedElement) || fallback;
         if (!typeName) 

@@ -210,6 +210,10 @@ export interface ParameterDefinition extends DefinitionBase {
      * the type specified by typeName is a nullable type. The default value is false.
      */
     isNullable?: boolean;
+    /**
+     * Gets the default value of the parameter.
+     */
+    defaultValue?: string;
 }
 
 /**
