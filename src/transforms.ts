@@ -1,5 +1,4 @@
-﻿import * as elements from '@yellicode/elements';
-import { RenamingTransform, RenameTargets } from '@yellicode/templating';
+﻿import { Element, RenamingTransform, RenameTargets } from '@yellicode/elements';
 import { isReservedKeyword } from './utils';
 
 /**
@@ -16,7 +15,7 @@ export class CSReservedKeywordTransform extends RenamingTransform {
         super(targets);
     }
 
-    protected rename(name: string, target: elements.Element): string {
+    protected rename(name: string, target: Element): string {
         if (!isReservedKeyword(name))
             return name;
 
