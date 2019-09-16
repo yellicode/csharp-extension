@@ -511,7 +511,11 @@ export class CSharpWriter extends CodeWriter {
             if (!definition.noGetter) this.write(' ');
             this.write('set;');
         };
-        this.writeEndOfLine(' }');
+        this.write(' }');
+        if (definition.defaultValue !== undefined) {
+            this.write(` = ${definition.defaultValue};`);
+        }
+        this.writeEndOfLine();
         return this;
     }
 
