@@ -256,4 +256,8 @@ export interface PropertyDefinition extends DefinitionBase {
     * the type specified by typeName is a nullable type. The default value is false.
     */
     isNullable?: boolean;
+    /**
+     * The default value of the property.
+     */
+    defaultValue?: string;
 }
