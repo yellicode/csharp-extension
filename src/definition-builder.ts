@@ -147,7 +147,7 @@ export class DefinitionBuilder {
         }
         
         definition.noSetter = property.isReadOnly || property.isDerived;       
-
+        definition.defaultValue = DefinitionBuilder.getDefaultValueString(property.defaultValue);
         return definition;        
     }
 
