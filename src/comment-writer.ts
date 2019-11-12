@@ -1,8 +1,8 @@
-import { TextWriter, TypeNameProvider, CodeWriterUtility } from '@yellicode/templating';
+import { TextWriter, CodeWriterUtility } from '@yellicode/core';
 
 export class CSharpCommentWriter {
 
-    constructor(private writer: TextWriter, private typeNameProvider: TypeNameProvider, private maxCommentWidth: number) {
+    constructor(private writer: TextWriter, private maxCommentWidth: number) {
 
     }
 

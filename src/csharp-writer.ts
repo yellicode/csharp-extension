@@ -1,6 +1,6 @@
 ﻿import * as elements from '@yellicode/elements';
 import * as opts from './options';
-import { CodeWriter, TextWriter, TypeNameProvider } from '@yellicode/templating';
+import { CodeWriter, TextWriter } from '@yellicode/core';
 import { CSharpTypeNameProvider } from './csharp-type-name-provider';
 import { CSharpCommentWriter } from './comment-writer';
 import { XmlDocUtility } from './xml-doc-utility';
@@ -13,7 +13,7 @@ import { NamespaceDefinition, ClassDefinition, AccessModifier, InterfaceDefiniti
  * independently.
  */
 export class CSharpWriter extends CodeWriter {
-    private typeNameProvider: TypeNameProvider;
+    private typeNameProvider: elements.TypeNameProvider;
     private definitionBuilder: DefinitionBuilder;
     private commentWriter: CSharpCommentWriter;
 
@@ -28,7 +28,7 @@ export class CSharpWriter extends CodeWriter {
 
         this.typeNameProvider = options.typeNameProvider || new CSharpTypeNameProvider();
         this.definitionBuilder = new DefinitionBuilder(this.typeNameProvider);
-        this.commentWriter = new CSharpCommentWriter(writer, this.typeNameProvider, options.maxCommentWidth || 100);
+        this.commentWriter = new CSharpCommentWriter(writer, options.maxCommentWidth || 100);
     }
 
     /**

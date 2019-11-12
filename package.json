@@ -17,8 +17,8 @@
     "url": "github:yellicode/csharp-extension.git"
   },
   "dependencies": {
-    "@yellicode/elements": "^1.1.1",
-    "@yellicode/templating": "^1.5.1"
+    "@yellicode/core": "^1.2.1",
+    "@yellicode/elements": "^1.2.2"
   },
   "devDependencies": {
     "rollup": "^0.66.6"

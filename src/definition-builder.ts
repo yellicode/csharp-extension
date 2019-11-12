@@ -2,11 +2,10 @@ import * as elements from '@yellicode/elements';
 import * as opts from './options';
 import { ClassDefinition, InterfaceDefinition, EnumDefinition, EnumMemberDefinition, DefinitionBase, TypeDefinition, AccessModifier, NamespaceDefinition, MethodDefinition, ParameterDefinition, PropertyDefinition, StructDefinition } from './model';
 import { ParameterDirectionKind } from '@yellicode/elements';
-import { TypeNameProvider } from '@yellicode/templating';
 import { CSharpTypeNameProvider } from './csharp-type-name-provider';
 
 export class DefinitionBuilder {
-    constructor(private typeNameProvider: TypeNameProvider) { }
+    constructor(private typeNameProvider: elements.TypeNameProvider) { }
 
     public buildNamespaceDefinition(pack: elements.Package, options?: opts.NamespaceOptions): NamespaceDefinition {
         if (!options) options = {};
@@ -50,7 +49,7 @@ export class DefinitionBuilder {
             type, !!(features & opts.StructFeatures.XmlDocSummary), options);
 
         // Build the struct-specific definition        
-        definition.implements = DefinitionBuilder.buildImplements(type, options.implements);     
+        definition.implements = DefinitionBuilder.buildImplements(type, options.implements);
         return definition;
     }
 
@@ -64,7 +63,7 @@ export class DefinitionBuilder {
             type, !!(features & opts.InterfaceFeatures.XmlDocSummary), options);
 
         // Build the interface-specific definition
-        definition.inherits = DefinitionBuilder.buildInherits(type, options.inherits);        
+        definition.inherits = DefinitionBuilder.buildInherits(type, options.inherits);
 
         return definition;
     }
@@ -123,10 +122,10 @@ export class DefinitionBuilder {
 
     public buildPropertyDefinition(property: elements.Property, options?: opts.PropertyOptions): PropertyDefinition {
         // Initialize options and features
-        if (!options) options = {};           
+        if (!options) options = {};
         const features = (options.features === undefined) ? opts.PropertyFeatures.All : options.features;
         const ownerIsInterface = elements.isInterface(property.owner);
-        
+
         // Build the base definition         
         const definition = DefinitionBuilder.buildDefinitionBase<PropertyDefinition>(
             property, !!(features & opts.PropertyFeatures.XmlDocSummary)
@@ -138,17 +137,17 @@ export class DefinitionBuilder {
         definition.isVirtual = options.virtual;
         definition.typeName = typename;
 
-        if (!ownerIsInterface && (features & opts.PropertyFeatures.AccessModifier)) definition.accessModifier = DefinitionBuilder.getAccessModifierString(property.visibility);               
+        if (!ownerIsInterface && (features & opts.PropertyFeatures.AccessModifier)) definition.accessModifier = DefinitionBuilder.getAccessModifierString(property.visibility);
 
-        if ((features & opts.PropertyFeatures.OptionalModifier) && 
-            property.lower === 0 &&             
+        if ((features & opts.PropertyFeatures.OptionalModifier) &&
+            property.lower === 0 &&
             CSharpTypeNameProvider.canBeNullable(property, typename)) {
             definition.isNullable = true;
         }
-        
-        definition.noSetter = property.isReadOnly || property.isDerived;       
+
+        definition.noSetter = property.isReadOnly || property.isDerived;
         definition.defaultValue = DefinitionBuilder.getDefaultValueString(property.defaultValue);
-        return definition;        
+        return definition;
     }
 
     public buildMethodDefinition(operation: elements.Operation, options?: opts.MethodOptions): MethodDefinition {
@@ -161,7 +160,7 @@ export class DefinitionBuilder {
             operation, !!(features & opts.MethodFeatures.XmlDocSummary)
         );
 
-        definition.isConstructor = operation.isConstructor;        
+        definition.isConstructor = operation.isConstructor;
         definition.isStatic = operation.isStatic;
         definition.isPartial = options.isPartial;
 
@@ -169,8 +168,8 @@ export class DefinitionBuilder {
             definition.isAbstract = options.isAbstract || (!options.isVirtual && operation.isAbstract);
             definition.isVirtual = options.isVirtual;
         }
-        if (!ownerIsInterface) definition.accessModifier = DefinitionBuilder.getAccessModifierString(operation.visibility);        
-        
+        if (!ownerIsInterface) definition.accessModifier = DefinitionBuilder.getAccessModifierString(operation.visibility);
+
         // Get the return type and documentation
         if (!operation.isConstructor) {
             var returnParameter = operation.getReturnParameter();
@@ -179,9 +178,9 @@ export class DefinitionBuilder {
                 if (features & opts.MethodFeatures.XmlDocReturns) {
                     definition.xmlDocReturns = DefinitionBuilder.buildXmlDocSummary(operation);
                 }
-            }    
-        }      
-        
+            }
+        }
+
         // Build parameter definitions      
         definition.parameters = this.buildParameterDefinitions(operation.ownedParameters, options);
         return definition;
@@ -192,7 +191,7 @@ export class DefinitionBuilder {
         const features = (options.features === undefined) ? opts.MethodFeatures.All : options.features;
 
         const inOutParameters: ParameterDefinition[] = [];
-        if (!params) 
+        if (!params)
             return inOutParameters;
 
         params.forEach(p => {
@@ -204,12 +203,12 @@ export class DefinitionBuilder {
             paramDefinition.isNullable = p.lower === 0 && CSharpTypeNameProvider.canBeNullable(p, typeName);
             paramDefinition.typeName = typeName;
             paramDefinition.defaultValue = DefinitionBuilder.getDefaultValueString(p.defaultValue),
-            inOutParameters.push(paramDefinition);
+                inOutParameters.push(paramDefinition);
         });
         return inOutParameters;
     }
 
-    private static buildInherits(type: elements.Type, additional: string[] | undefined): string[] | undefined {        
+    private static buildInherits(type: elements.Type, additional: string[] | undefined): string[] | undefined {
         if (!elements.isClassifier(type)) {
             return;
         }
@@ -269,11 +268,11 @@ export class DefinitionBuilder {
     }
 
     private static getDefaultValueString(defaultValue: elements.ValueSpecification | null): string | undefined {
-        if (!defaultValue) 
+        if (!defaultValue)
             return undefined;
-        
-        return elements.isLiteralString(defaultValue) ? 
-            `"${defaultValue.value}"` : 
+
+        return elements.isLiteralString(defaultValue) ?
+            `"${defaultValue.value}"` :
             defaultValue.getStringValue();
     }
 
@@ -291,10 +290,10 @@ export class DefinitionBuilder {
                 return undefined;
         }
     }
-    
+
     private getFullTypeName(typedElement: elements.TypedElement, collectionType: opts.CollectionType | null, fallback?: string): string | undefined {
         const typeName = this.typeNameProvider.getTypeName(typedElement) || fallback;
-        if (!typeName) 
+        if (!typeName)
             return; // no type name and no fallback
 
         if (elements.isMultiplicityElement(typedElement) && typedElement.isMultivalued()) {

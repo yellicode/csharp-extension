@@ -1,4 +1,4 @@
-﻿import { TypeNameProvider } from '@yellicode/templating';
+﻿import { TypeNameProvider } from '@yellicode/elements';
 
 export interface WriterOptions {
     /**
