@@ -65,6 +65,9 @@ Defines the class features to write. The default is ClassFeatures.All.
 Any additional interface names that the class should implement.
 ### ClassOptions.inherits: string
 Any additional class names that the class should inherit from.
+### ClassOptions.isAbstract: boolean
+Indicates if the class should be made abstract. 
+By default, the value of the 'Abstract' class setting in the model is used.
 ### ClassOptions.isPartial: boolean
 Indicates if the class must be prefixed with the "partial" keyword.
 
@@ -85,10 +88,13 @@ Enumerates the possible collection types to generated for properties and paramet
 * isDataType: boolean
 
 ## <a name="c-sharp-writer"></a> CSharpWriter class
+A CodeWriter for writing C# code from code generation templates. This writer can write classes, interfaces, structs and enumerations and also
+contains functions for writing namespace blocks and using directives. The CSharpWriter is compatible with Yellicode models but can also work
+independently.
 
 ### CSharpWriter.constructor(writer, options) : CSharpWriter
 Constructor. Creates a new CSharpWriter instance using the TextWriter and options provided.
-* writer: TextWriter
+* writer: object
 
    The template's current TextWriter.
 * options: [WriterOptions](#writer-options)
@@ -110,34 +116,34 @@ the type name.
 * type: Type
 
    Any element that derives from Type.
-### CSharpWriter.writeAccessModifier(definition) : void
+### CSharpWriter.writeAccessModifier(definition) : this
 Writes the type's access modifier to the output with a trailing whitespace.
 Writes the visibility to the output with a trailing whitespace. If the visibilty is null or 
 not supported by C#, nothing will be written.
 * definition: { accessModifier?: AccessModifier; }
 
    The type definition.
-### CSharpWriter.writeAccessModifier(visibilityKind) : void
+### CSharpWriter.writeAccessModifier(visibilityKind) : this
 Writes the type's access modifier to the output with a trailing whitespace.
 Writes the visibility to the output with a trailing whitespace. If the visibilty is null or 
 not supported by C#, nothing will be written.
 * visibilityKind: VisibilityKind
 
    A VisibilityKind value. This value can be null.
-### CSharpWriter.writeAutoProperty(property) : void
+### CSharpWriter.writeAutoProperty(property) : this
 Writes an auto property with a getter and a setter. 
 Writes an auto property with a getter and - if the property is not ReadOnly or Derived - a setter.     
 This function can be used for both Class- and and Interface properties. 
 * property: [PropertyDefinition](#property-definition)
 
    The property definition.
-### CSharpWriter.writeAutoProperty(property, options) : void
+### CSharpWriter.writeAutoProperty(property, options) : this
 Writes an auto property with a getter and a setter. 
 Writes an auto property with a getter and - if the property is not ReadOnly or Derived - a setter.     
 This function can be used for both Class- and and Interface properties. 
 * property: Property
 * options: [PropertyOptions](#property-options)
-### CSharpWriter.writeClassBlock(definition, contents) : void
+### CSharpWriter.writeClassBlock(definition, contents) : this
 Writes a block of code, wrapped in a class declaration and opening and closing brackets. 
 This function does not write class members.
 Writes a block of code, wrapped in a class declaration and opening and closing brackets. 
@@ -148,7 +154,7 @@ This function does not write class members.
 * contents: (writer: CSharpWriter) => void
 
    A callback function that writes the class contents.
-### CSharpWriter.writeClassBlock(cls, contents, options) : void
+### CSharpWriter.writeClassBlock(cls, contents, options) : this
 Writes a block of code, wrapped in a class declaration and opening and closing brackets. 
 This function does not write class members.
 Writes a block of code, wrapped in a class declaration and opening and closing brackets. 
@@ -162,34 +168,40 @@ This function does not write class members.
 * options: [ClassOptions](#class-options)
 
    An optional ClassOptions object.
-### CSharpWriter.writeClassMethodBlock(operation, contents, options) : void
+### CSharpWriter.writeClassMethodBlock(operation, contents, options) : this
 Writes an indented block of code, wrapped in a method declaration and opening and closing brackets. 
 * operation: Operation
 * contents: (writer: CSharpWriter) => void
 * options: [MethodOptions](#method-options)
-### CSharpWriter.writeCodeBlock(contents) : void
+### CSharpWriter.writeCodeBlock(contents) : this
 Writes an indented block of code, wrapped in opening and closing brackets. 
 * contents: (writer: CSharpWriter) => void
 
    A callback function that writes the contents.
-### CSharpWriter.writeDelimitedCommentLines(lines) : void
-* lines: string
-### CSharpWriter.writeDelimitedCommentParagraph(text) : void
-* text: string
-### CSharpWriter.writeEnumeration(definition) : void
-Writes a full enumeration, including members.   
-Writes a full enumeration, including members.   
-* definition: [EnumDefinition](#enum-definition)
+### CSharpWriter.writeDelimitedCommentLines(paragraph) : this
+* paragraph: string
+### CSharpWriter.writeDelimitedCommentParagraph(paragraph) : this
+Writes a paragraph of comments, delimited by a '\/\*' and a '\*\/', each other line starting with a '*'.
+* paragraph: string
+### CSharpWriter.writeDelimitedCommentParagraph(paragraph) : this
+Writes a paragraph of comments, delimited by a '\/\*' and a '\*\/', each other line starting with a '*'.
+* paragraph: string
 
-   The enumeration definition.
-### CSharpWriter.writeEnumeration(enumeration, options) : void
+   The paragraph to write.
+### CSharpWriter.writeEnumeration(enumeration, options) : this
 Writes a full enumeration, including members.   
 Writes a full enumeration, including members.   
 * enumeration: Enumeration
 * options: [EnumOptions](#enum-options)
 
    An optional EnumOptions object.
-### CSharpWriter.writeEnumerationBlock(enumeration, contents, options) : void
+### CSharpWriter.writeEnumeration(definition) : this
+Writes a full enumeration, including members.   
+Writes a full enumeration, including members.   
+* definition: [EnumDefinition](#enum-definition)
+
+   The enumeration definition.
+### CSharpWriter.writeEnumerationBlock(enumeration, contents, options) : this
 Writes a block of code, wrapped in an enum declaration and opening and closing brackets. 
 This function does not write enumeration members. Use the writeEnumMember function
 to write each individual member or the writeEnumeration function to write the full enumeration.
@@ -203,7 +215,7 @@ to write each individual member or the writeEnumeration function to write the fu
 * options: [EnumOptions](#enum-options)
 
    An optional EnumerationOptions object.
-### CSharpWriter.writeEnumerationBlock(definition, contents) : void
+### CSharpWriter.writeEnumerationBlock(definition, contents) : this
 Writes a block of code, wrapped in an enum declaration and opening and closing brackets. 
 This function does not write enumeration members. Use the writeEnumMember function
 to write each individual member or the writeEnumeration function to write the full enumeration.
@@ -216,7 +228,13 @@ to write each individual member or the writeEnumeration function to write the fu
 * contents: (writer: CSharpWriter) => void
 
    A callback function that writes the enumeration contents.
-### CSharpWriter.writeEnumMember(literal, options, isLast) : void
+### CSharpWriter.writeEnumMember(definition) : this
+Writes an individual enumeration member.
+Writes an individual enumeration member.
+* definition: [EnumMemberDefinition](#enum-member-definition)
+
+   The enumeration member definition.
+### CSharpWriter.writeEnumMember(literal, options, isLast) : this
 Writes an individual enumeration member.
 Writes an individual enumeration member.
 * literal: EnumerationLiteral
@@ -228,19 +246,13 @@ Writes an individual enumeration member.
 * isLast: boolean
 
    Set to true if this is the last member of the enumeration to be written (avoidinga trailing comma). 
-### CSharpWriter.writeEnumMember(definition) : void
-Writes an individual enumeration member.
-Writes an individual enumeration member.
-* definition: [EnumMemberDefinition](#enum-member-definition)
-
-   The enumeration member definition.
-### CSharpWriter.writeInOutParameters(params) : void
+### CSharpWriter.writeInOutParameters(params) : this
 Writes the input and output parameters of a method.
 Writes the input and output parameters (all parameters except the return parameter) of a method.
 * params: [ParameterDefinition](#parameter-definition)
 
    The parameter definitions.   
-### CSharpWriter.writeInOutParameters(params, options) : void
+### CSharpWriter.writeInOutParameters(params, options) : this
 Writes the input and output parameters of a method.
 Writes the input and output parameters (all parameters except the return parameter) of a method.
 * params: Parameter
@@ -249,7 +261,18 @@ Writes the input and output parameters (all parameters except the return paramet
 * options: [MethodOptions](#method-options)
 
    An optional MethodOptions object.
-### CSharpWriter.writeInterfaceBlock(iface, contents, options) : void
+### CSharpWriter.writeInterfaceBlock(definition, contents) : this
+Writes a block of code, wrapped in an interface declaration and opening and closing brackets. 
+This function does not write interface members.
+Writes a block of code, wrapped in an interface declaration and opening and closing brackets. 
+This function does not write interface members.
+* definition: [InterfaceDefinition](#interface-definition)
+
+   The interface definition.
+* contents: (writer: CSharpWriter) => void
+
+   A callback function that writes the interface contents.
+### CSharpWriter.writeInterfaceBlock(iface, contents, options) : this
 Writes a block of code, wrapped in an interface declaration and opening and closing brackets. 
 This function does not write interface members.
 Writes a block of code, wrapped in an interface declaration and opening and closing brackets. 
@@ -263,34 +286,11 @@ This function does not write interface members.
 * options: [InterfaceOptions](#interface-options)
 
    An optional InterfaceOptions object.
-### CSharpWriter.writeInterfaceBlock(definition, contents) : void
-Writes a block of code, wrapped in an interface declaration and opening and closing brackets. 
-This function does not write interface members.
-Writes a block of code, wrapped in an interface declaration and opening and closing brackets. 
-This function does not write interface members.
-* definition: [InterfaceDefinition](#interface-definition)
-
-   The interface definition.
-* contents: (writer: CSharpWriter) => void
-
-   A callback function that writes the interface contents.
-### CSharpWriter.writeInterfaceMethod(operation, options) : void
+### CSharpWriter.writeInterfaceMethod(operation, options) : this
 Writes a method declaration without a body.
 * operation: Operation
 * options: [MethodOptions](#method-options)
-### CSharpWriter.writeMethodBlock(operation, contents, options) : void
-Writes an indented block of code, wrapped in a method declaration and opening and closing brackets. 
-Writes an indented block of code, wrapped in a method declaration and opening and closing brackets. 
-* operation: Operation
-
-   The operation for which to write the method.
-* contents: (writer: CSharpWriter) => void
-
-   A callback function that writes the operation contents. This callback will not be invokedif the method is abstract.
-* options: [MethodOptions](#method-options)
-
-   An optional MethodOptions object.
-### CSharpWriter.writeMethodBlock(method, contents) : void
+### CSharpWriter.writeMethodBlock(method, contents) : this
 Writes an indented block of code, wrapped in a method declaration and opening and closing brackets. 
 Writes an indented block of code, wrapped in a method declaration and opening and closing brackets. 
 * method: [MethodDefinition](#method-definition)
@@ -299,13 +299,25 @@ Writes an indented block of code, wrapped in a method declaration and opening an
 * contents: (writer: CSharpWriter) => void
 
    A callback function that writes the operation contents. This callback will not be invokedif the method is abstract.
-### CSharpWriter.writeMethodDeclaration(definition) : void
+### CSharpWriter.writeMethodBlock(operation, contents, options) : this
+Writes an indented block of code, wrapped in a method declaration and opening and closing brackets. 
+Writes an indented block of code, wrapped in a method declaration and opening and closing brackets. 
+* operation: Operation
+
+   The operation for which to write the method.
+* contents: (writer: CSharpWriter) => void
+
+   A callback function that writes the operation contents. This callback will not be invokedif the method is abstract.
+* options: [MethodOptions](#method-options)
+
+   An optional MethodOptions object.
+### CSharpWriter.writeMethodDeclaration(definition) : this
 Writes a method declaration without a body. Use this function to generate interface methods.
 Writes a method declaration without a body. Use this function to generate interface methods.
 * definition: [MethodDefinition](#method-definition)
 
    The method definition.
-### CSharpWriter.writeMethodDeclaration(operation, options) : void
+### CSharpWriter.writeMethodDeclaration(operation, options) : this
 Writes a method declaration without a body. Use this function to generate interface methods.
 Writes a method declaration without a body. Use this function to generate interface methods.
 * operation: Operation
@@ -314,7 +326,7 @@ Writes a method declaration without a body. Use this function to generate interf
 * options: [MethodOptions](#method-options)
 
    An optional MethodOptions object.
-### CSharpWriter.writeNamespaceBlock(definition, contents) : void
+### CSharpWriter.writeNamespaceBlock(definition, contents) : this
 Writes an indented block of code, wrapped in a namespace declaration and opening and closing brackets. 
 Writes an indented block of code, wrapped in a namespace declaration and opening and closing brackets. 
 * definition: [NamespaceDefinition](#namespace-definition)
@@ -323,7 +335,7 @@ Writes an indented block of code, wrapped in a namespace declaration and opening
 * contents: (writer: CSharpWriter) => void
 
    A callback function that writes the namespace contents.
-### CSharpWriter.writeNamespaceBlock(pack, contents, options) : void
+### CSharpWriter.writeNamespaceBlock(pack, contents, options) : this
 Writes an indented block of code, wrapped in a namespace declaration and opening and closing brackets. 
 Writes an indented block of code, wrapped in a namespace declaration and opening and closing brackets. 
 * pack: Package
@@ -335,7 +347,19 @@ Writes an indented block of code, wrapped in a namespace declaration and opening
 * options: [NamespaceOptions](#namespace-options)
 
    An optional NamespaceOptions object.
-### CSharpWriter.writePropertyBlock(property, getterContents, setterContents, options) : void
+### CSharpWriter.writePropertyBlock(property, getterContents, setterContents) : this
+Writes a property code block using optional callback functions for writing the getter and setter contents.
+Writes a property code block using optional callback functions for writing the getter and setter contents.
+* property: [PropertyDefinition](#property-definition)
+
+   The property definition.
+* getterContents: () => void
+
+   An optional callback function that writes the getter code.
+* setterContents: () => void
+
+   An optional callback function that writes the setter code. 
+### CSharpWriter.writePropertyBlock(property, getterContents, setterContents, options) : this
 Writes a property code block using optional callback functions for writing the getter and setter contents.
 Writes a property code block using optional callback functions for writing the getter and setter contents.
 * property: Property
@@ -350,19 +374,7 @@ Writes a property code block using optional callback functions for writing the g
 * options: [PropertyOptions](#property-options)
 
    An optional PropertyOptions object.
-### CSharpWriter.writePropertyBlock(property, getterContents, setterContents) : void
-Writes a property code block using optional callback functions for writing the getter and setter contents.
-Writes a property code block using optional callback functions for writing the getter and setter contents.
-* property: [PropertyDefinition](#property-definition)
-
-   The property definition.
-* getterContents: () => void
-
-   An optional callback function that writes the getter code.
-* setterContents: () => void
-
-   An optional callback function that writes the setter code. 
-### CSharpWriter.writeStructBlock(definition, contents) : void
+### CSharpWriter.writeStructBlock(definition, contents) : this
 Writes a block of code, wrapped in a struct declaration and opening and closing brackets. 
 This function does not write struct members.
 Writes a block of code, wrapped in a struct declaration and opening and closing brackets. 
@@ -373,7 +385,7 @@ This function does not write struct members.
 * contents: (writer: CSharpWriter) => void
 
    A callback function that writes the struct contents.
-### CSharpWriter.writeStructBlock(cls, contents, options) : void
+### CSharpWriter.writeStructBlock(cls, contents, options) : this
 Writes a block of code, wrapped in a struct declaration and opening and closing brackets. 
 This function does not write struct members.
 Writes a block of code, wrapped in a struct declaration and opening and closing brackets. 
@@ -387,19 +399,64 @@ This function does not write struct members.
 * options: [StructOptions](#struct-options)
 
    An optional StructOptions object.
-### CSharpWriter.writeUsingDirectives(values) : void
+### CSharpWriter.writeUsingDirectives(values) : this
 Writes 1 or more using directives, each on a new line.
 * values: string
 
    A collection of strings, typically namespace names.
-### CSharpWriter.writeXmlDocLines(lines) : void
+### CSharpWriter.writeXmlDocLines(lines) : this
+Writes a paragraph of xml doc comments, each line starting with forward slashes '/// '.
 * lines: string
-### CSharpWriter.writeXmlDocParagraph(text) : void
-* text: string
-### CSharpWriter.writeXmlDocSummary(comments) : void
-* comments: string
-### CSharpWriter.writeXmlDocSummary(text) : void
-* text: string
+### CSharpWriter.writeXmlDocParagraph(paragraph) : this
+Writes a paragraph of xml doc comments, each line starting with forward slashes '/// '. 
+The output will be word-wrapped to the current maxCommentWith specified in the writer options 
+(default: 100 characters).
+Writes a paragraph of xml doc comments, each line starting with forward slashes '/// '.
+The output will be word-wrapped to the current maxCommentWith specified in the writer options 
+(default: 100 characters).
+* paragraph: string
+
+   The paragraph to write.
+### CSharpWriter.writeXmlDocParagraph(paragraph) : this
+Writes a paragraph of xml doc comments, each line starting with forward slashes '/// '. 
+The output will be word-wrapped to the current maxCommentWith specified in the writer options 
+(default: 100 characters).
+Writes a paragraph of xml doc comments, each line starting with forward slashes '/// '.
+The output will be word-wrapped to the current maxCommentWith specified in the writer options 
+(default: 100 characters).
+* paragraph: string
+### CSharpWriter.writeXmlDocSummary(element) : this
+Writes a <summary> XML doc tag from an array of string comments. Each comment will be written on a new line.
+The output will be word-wrapped to the current maxCommentWith specified in the writer options 
+(default: 100 characters).
+Writes a <summary> XML doc tag from a string. The output will be word-wrapped to the 
+current maxCommentWith specified in the writer options.
+Writes a <summary> XML doc tag from the element's ownedComments. The output will be word-wrapped to the 
+current maxCommentWith specified in the writer options.
+(default: 100 characters).
+* element: Element
+### CSharpWriter.writeXmlDocSummary(paragraph) : this
+Writes a <summary> XML doc tag from an array of string comments. Each comment will be written on a new line.
+The output will be word-wrapped to the current maxCommentWith specified in the writer options 
+(default: 100 characters).
+Writes a <summary> XML doc tag from a string. The output will be word-wrapped to the 
+current maxCommentWith specified in the writer options.
+Writes a <summary> XML doc tag from the element's ownedComments. The output will be word-wrapped to the 
+current maxCommentWith specified in the writer options.
+(default: 100 characters).
+* paragraph: string
+### CSharpWriter.writeXmlDocSummary(paragraph) : this
+Writes a <summary> XML doc tag from an array of string comments. Each comment will be written on a new line.
+The output will be word-wrapped to the current maxCommentWith specified in the writer options 
+(default: 100 characters).
+Writes a <summary> XML doc tag from a string. The output will be word-wrapped to the 
+current maxCommentWith specified in the writer options.
+Writes a <summary> XML doc tag from the element's ownedComments. The output will be word-wrapped to the 
+current maxCommentWith specified in the writer options.
+(default: 100 characters).
+* paragraph: string
+
+   A string array of comments.
 
 ## <a name="cs-reserved-keyword-transform"></a> CSReservedKeywordTransform class
 Prefixes reserved C# keywords with a "@". This applies to:
@@ -504,7 +561,6 @@ Gets the interface properties.
 * XmlDocSummary
 * Generalizations
 * All
-* AllExceptXmlDocs
 
 ## <a name="interface-options"></a> InterfaceOptions interface
 
@@ -558,7 +614,6 @@ Contains the documentation of the return value.
 
    The access modifier if the owner is not an Interface.
 * All
-* AllExceptXmlDocs
 
 ## <a name="method-options"></a> MethodOptions interface
 
@@ -566,9 +621,12 @@ Contains the documentation of the return value.
 Sets the collection type to be generated for parameters in case they are multi-valued. The default is ICollection.
 ### MethodOptions.features: MethodFeatures
 Sets the MethodFeatures. The default is MethodFeatures.All.
+### MethodOptions.isAbstract: boolean
+Indicates if the method should be made abstract. 
+By default, the value of the 'Abstract' operation setting in the model is used.
 ### MethodOptions.isPartial: boolean
 Indicates if the method must be prefixed with the "partial" keyword.
-### MethodOptions.virtual: boolean
+### MethodOptions.isVirtual: boolean
 Indicates if the method should be made virtual. The default value is false. 
 
 ## <a name="namespace-definition"></a> NamespaceDefinition interface
@@ -602,6 +660,8 @@ Get or sets the name of the code element. This field is required.
 ### ParameterDefinition.xmlDocSummary: string
 Gets the XML documentation summary of the element. Each string in this
 array will be written on a new line. This field is optional.
+### ParameterDefinition.defaultValue: string
+Gets the default value of the parameter.
 ### ParameterDefinition.isNullable: boolean
 Indicates if the parameter should be nullable. The caller should ensure that
 the type specified by typeName is a nullable type. The default value is false.
@@ -623,6 +683,8 @@ Gets the XML documentation summary of the element. Each string in this
 array will be written on a new line. This field is optional.
 ### PropertyDefinition.accessModifier: any
 Gets the property's access modifier. By default, no access modifier will be written.
+### PropertyDefinition.defaultValue: string
+The default value of the property.
 ### PropertyDefinition.hasGetter: boolean
 Indicates if a property getter should be written. The default value is false.
 ### PropertyDefinition.hasSetter: boolean
@@ -649,7 +711,6 @@ the collection must be part of the name (e.g. 'List<string>').
    The access modifier if the owner is not an Interface.
 * OptionalModifier
 * All
-* AllExceptXmlDocs
 
 ## <a name="property-options"></a> PropertyOptions interface
 
@@ -717,6 +778,6 @@ The default value is false.
 ### WriterOptions.maxCommentWidth: integer
 The maximum width of generated documentation comments before they are word-wrapped.
 The default value is 100 characters.
-### WriterOptions.typeNameProvider: TypeNameProvider
+### WriterOptions.typeNameProvider: object
 Sets an optional TypeNameProvider. By default, the CSharpTypeNameProvider is used.
 
