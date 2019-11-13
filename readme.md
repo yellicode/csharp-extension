@@ -53,7 +53,8 @@ This sample creates a simple C# definition of a *Task* class, which is then prov
 structure (your own JSON model, using the 'model' parameter).
 
 ```ts
-import { Generator, TextWriter } from '@yellicode/templating';
+import { TextWriter } from '@yellicode/core';
+import { Generator } from '@yellicode/templating';
 import { CSharpWriter, ClassDefinition, NamespaceDefinition } from '@yellicode/csharp';
 
 Generator.generateFromModel({ outputFile: './custom-sample.cs' }, (output: TextWriter, model: any) => {
@@ -116,9 +117,10 @@ npm install @yellicode/elements --save-dev
 This template generates a C# code file with all classes in the model and, for each class, writes an auto-property for each class attribute.
 
 ```ts
-import { Generator, TextWriter } from '@yellicode/templating';
-import * as elements from '@yellicode/elements';
+import { TextWriter } from '@yellicode/core';
+import { Generator } from '@yellicode/templating';
 import { CSharpWriter } from '@yellicode/csharp';
+import * as elements from '@yellicode/elements';
 
 Generator.generateFromModel({ outputFile: './model-based-sample.cs' }, (output: TextWriter, model: elements.Model) => {
     const csharp = new CSharpWriter(output);   
