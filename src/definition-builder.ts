@@ -48,7 +48,7 @@ export class DefinitionBuilder {
         const definition = DefinitionBuilder.buildTypeDefinition<StructDefinition>(
             type, !!(features & opts.StructFeatures.XmlDocSummary), options);
 
-        // Build the struct-specific definition        
+        // Build the struct-specific definition
         definition.implements = DefinitionBuilder.buildImplements(type, options.implements);
         return definition;
     }
@@ -80,7 +80,7 @@ export class DefinitionBuilder {
         // Build the member-specific definition
         definition.isLast = isLast || false;
 
-        if (buildInitializers && literal.specification != null) { // using '!=' on purpose  
+        if (buildInitializers && literal.specification != null) { // using '!=' on purpose
             const specification = literal.specification;
             definition.value = elements.isLiteralInteger(specification) ? specification.value : undefined;
         }
@@ -93,7 +93,7 @@ export class DefinitionBuilder {
         if (!options) options = {};
         const features = (options.features === undefined) ? opts.EnumFeatures.All : options.features;
 
-        // Build the base definition         
+        // Build the base definition
         const definition = DefinitionBuilder.buildDefinitionBase<EnumDefinition>(
             type, !!(features & opts.EnumFeatures.XmlDocSummary)
         );
@@ -126,18 +126,18 @@ export class DefinitionBuilder {
         const features = (options.features === undefined) ? opts.PropertyFeatures.All : options.features;
         const ownerIsInterface = elements.isInterface(property.owner);
 
-        // Build the base definition         
+        // Build the base definition
         const definition = DefinitionBuilder.buildDefinitionBase<PropertyDefinition>(
             property, !!(features & opts.PropertyFeatures.XmlDocSummary)
         );
 
         // Build the property-specific definition
         const typename = this.getFullTypeName(property, options.collectionType || null, 'object')!;
-        definition.accessModifier = DefinitionBuilder.getAccessModifierString(property.visibility);
         definition.isVirtual = options.virtual;
         definition.typeName = typename;
 
-        if (!ownerIsInterface && (features & opts.PropertyFeatures.AccessModifier)) definition.accessModifier = DefinitionBuilder.getAccessModifierString(property.visibility);
+        if (!ownerIsInterface && (features & opts.PropertyFeatures.AccessModifier))
+            definition.accessModifier = DefinitionBuilder.getAccessModifierString(property.visibility);
 
         if ((features & opts.PropertyFeatures.OptionalModifier) &&
             property.lower === 0 &&
@@ -155,7 +155,7 @@ export class DefinitionBuilder {
         const features = (options.features === undefined) ? opts.MethodFeatures.All : options.features;
         const ownerIsInterface = elements.isInterface(operation.owner);
 
-        // Build the base definition         
+        // Build the base definition
         const definition = DefinitionBuilder.buildDefinitionBase<MethodDefinition>(
             operation, !!(features & opts.MethodFeatures.XmlDocSummary)
         );
@@ -181,7 +181,7 @@ export class DefinitionBuilder {
             }
         }
 
-        // Build parameter definitions      
+        // Build parameter definitions
         definition.parameters = this.buildParameterDefinitions(operation.ownedParameters, options);
         return definition;
     }
@@ -230,7 +230,7 @@ export class DefinitionBuilder {
         }
         const allNames: string[] = [];
         if (type.interfaceRealizations) {
-            // todo: allow qualifiedName 
+            // todo: allow qualifiedName
             allNames.push(...type.interfaceRealizations.map(ir => ir.contract.name));
         }
         if (additional) {
