@@ -34,6 +34,7 @@ export class DefinitionBuilder {
         definition.inherits = DefinitionBuilder.buildInherits(type, options.inherits);
         definition.implements = DefinitionBuilder.buildImplements(type, options.implements);
         if (elements.isClass(type)) {
+            definition.isStatic = options.isStatic;
             definition.isAbstract = type.isAbstract || options.isAbstract;
         }
         return definition;

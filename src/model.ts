@@ -4,7 +4,7 @@
 export type AccessModifier = 'public' | 'private' | 'protected' | 'internal' | 'protected internal' | 'private protected';
 
 /**
- * The base interface for all C# definitions. 
+ * The base interface for all C# definitions.
  */
 export interface DefinitionBase {
     /**
@@ -35,7 +35,7 @@ export interface TypeDefinition extends DefinitionBase {
      */
     accessModifier?: AccessModifier;
     /**
-     * Indicates whether the type should be written with the 'partial' keyword. 
+     * Indicates whether the type should be written with the 'partial' keyword.
      * The default value is false.
      */
     isPartial?: boolean;
@@ -46,7 +46,7 @@ export interface TypeDefinition extends DefinitionBase {
  */
 export interface StructDefinition extends TypeDefinition {
     /**
-     * Contains the names of the interfaces that the struct should implement. 
+     * Contains the names of the interfaces that the struct should implement.
      * This field is optional.
      */
     implements?: string[];
@@ -55,7 +55,7 @@ export interface StructDefinition extends TypeDefinition {
     */
     properties?: PropertyDefinition[];
     /**
-     * Gets the struct methods. 
+     * Gets the struct methods.
      */
     methods?: MethodDefinition[];
 }
@@ -65,17 +65,22 @@ export interface StructDefinition extends TypeDefinition {
  */
 export interface ClassDefinition extends TypeDefinition {
     /**
-     * Indicates whether the class should be abstract. 
+     * Indicates if the class should be a static class.
+     * The default value is false.
+     */
+    isStatic?: boolean;
+    /**
+     * Indicates whether the class should be abstract.
      * The default value is false.
      */
     isAbstract?: boolean;
     /**
-    * Contains the names of the interfaces that the class should implement. 
+    * Contains the names of the interfaces that the class should implement.
     * This field is optional.
     */
     implements?: string[];
     /**
-     * Contains the names of the classes from which the class should inherit. 
+     * Contains the names of the classes from which the class should inherit.
      * This field is optional.
      */
     inherits?: string[];
@@ -84,7 +89,7 @@ export interface ClassDefinition extends TypeDefinition {
      */
     properties?: PropertyDefinition[];
     /**
-     * Gets the class methods. 
+     * Gets the class methods.
      */
     methods?: MethodDefinition[];
 }
@@ -94,7 +99,7 @@ export interface ClassDefinition extends TypeDefinition {
  */
 export interface InterfaceDefinition extends TypeDefinition {
     /**
-    * Contains the names of the interfaces from which the interfaces should inherit. 
+    * Contains the names of the interfaces from which the interfaces should inherit.
     * This field is optional.
     */
     inherits?: string[];
@@ -103,7 +108,7 @@ export interface InterfaceDefinition extends TypeDefinition {
     */
     properties?: PropertyDefinition[];
     /**
-     * Gets the interface methods. 
+     * Gets the interface methods.
      */
     methods?: MethodDefinition[];
 }
@@ -113,7 +118,7 @@ export interface InterfaceDefinition extends TypeDefinition {
  */
 export interface EnumMemberDefinition extends DefinitionBase {
     /**
-     * Gets the numeric value of the member. 
+     * Gets the numeric value of the member.
      * This field is optional. By default, no value will be written.
      */
     value?: number;
@@ -163,7 +168,7 @@ export interface MethodDefinition extends DefinitionBase {
     */
     accessModifier?: AccessModifier;
     /**
-     * Indicates if the method should be a static method. 
+     * Indicates if the method should be a static method.
      * The default value is false.
      */
     isStatic?: boolean;
@@ -182,7 +187,7 @@ export interface MethodDefinition extends DefinitionBase {
      */
     isConstructor?: boolean;
     /**
-     * Indicates whether the method should be written with the 'partial' keyword. 
+     * Indicates whether the method should be written with the 'partial' keyword.
      * The default value is false.
      */
     isPartial?: boolean;
@@ -231,16 +236,16 @@ export interface PropertyDefinition extends DefinitionBase {
     accessModifier?: AccessModifier;
     /**
      * Indicates if a property getter should be written. The default value is false.
-     * @deprecated A getter is now written by default. Please use noGetter if you want to omit the getter. 
+     * @deprecated A getter is now written by default. Please use noGetter if you want to omit the getter.
      */
     hasGetter?: boolean;
     /**
-     * Indicates if a property getter should be omitted. By default, a getter will be written. 
+     * Indicates if a property getter should be omitted. By default, a getter will be written.
      */
     noGetter?: boolean;
     /**
      * Indicates if a property setter should be written. The default value is false.
-     * @deprecated A setter is now written by default. Please use noSetter if you want to omit the setter. 
+     * @deprecated A setter is now written by default. Please use noSetter if you want to omit the setter.
      */
     hasSetter?: boolean;
     /**

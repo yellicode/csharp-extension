@@ -20,10 +20,10 @@ npm install @yellicode/csharp --save-dev
 ```
 ## Using the CSharpWriter
 The main class for generating C# code is the `CSharpWriter`. The `CSharpWriter` can work with 2 different model kinds as input:
-* A C# code definition. 
+* A C# code definition.
 * A [Yellicode model](https://www.yellicode.com/docs/yellicode-models).
 
-Most `CSharpWriter` functions have 2 overloads which can be used for each different kind of input. For example, the `writeClassBlock` function has the 
+Most `CSharpWriter` functions have 2 overloads which can be used for each different kind of input. For example, the `writeClassBlock` function has the
 following overloads:
 1. `public writeClassBlock(definition: ClassDefinition, contents: () => void): void;`
 2. `public writeClassBlock(cls: elements.Class, contents: () => void, options?: opts.ClassOptions): void;`
@@ -31,19 +31,20 @@ following overloads:
 The first overload accepts a `ClassDefinition`, which has the following structure (comments left out for brevity):
 
 ```ts
-export interface ClassDefinition extends TypeDefinition {    
-    isAbstract?: boolean;    
-    implements?: string[];    
-    inherits?: string[];    
-    properties?: PropertyDefinition[];    
+export interface ClassDefinition extends TypeDefinition {
+    isStatic?: boolean;
+    isAbstract?: boolean;
+    implements?: string[];
+    inherits?: string[];
+    properties?: PropertyDefinition[];
     methods?: MethodDefinition[];
 }
 ```
-When using this overload, you should build the definition in your code generation template. You can do this manually, but typically you would 
+When using this overload, you should build the definition in your code generation template. You can do this manually, but typically you would
 configure a JSON file as model (see the [Yellicode quick start](https://www.yellicode.com/docs/quickstart) for a how-to) and transform that JSON structure to a C# definition.
 
-The second overload accepts a [class](https://www.yellicode.com/docs/api/model/class) instance from a Yellicode model and accepts an optional `ClassOptions` 
-object to control code generation (internally, the Yellicode class is transformed to a `ClassDefinition`). 
+The second overload accepts a [class](https://www.yellicode.com/docs/api/model/class) instance from a Yellicode model and accepts an optional `ClassOptions`
+object to control code generation (internally, the Yellicode class is transformed to a `ClassDefinition`).
 
 ## Examples
 *Note: a ZIP archive with working examples is also [available for download here](https://github.com/yellicode/yellicode-csharp/blob/master/examples/yellicode-csharp-examples.zip).*
@@ -59,9 +60,9 @@ import { CSharpWriter, ClassDefinition, NamespaceDefinition } from '@yellicode/c
 
 Generator.generateFromModel({ outputFile: './custom-sample.cs' }, (output: TextWriter, model: any) => {
 
-    // Build a C# definition in code. You could alternatively configure any JSON file as model 
+    // Build a C# definition in code. You could alternatively configure any JSON file as model
     // and transform that data - available in the 'model' parameter - to a C# definition.
-    const namespaceDefinition: NamespaceDefinition = { name: 'SampleNamespace' };    
+    const namespaceDefinition: NamespaceDefinition = { name: 'SampleNamespace' };
 
     const classDefinition: ClassDefinition = {
         name: 'Task',
@@ -75,8 +76,8 @@ Generator.generateFromModel({ outputFile: './custom-sample.cs' }, (output: TextW
     ];
 
     // Write the namespace, the classes and its properties
-    const csharp = new CSharpWriter(output);    
-    csharp.writeNamespaceBlock(namespaceDefinition, () => {         
+    const csharp = new CSharpWriter(output);
+    csharp.writeNamespaceBlock(namespaceDefinition, () => {
         csharp.writeClassBlock(classDefinition, () => {
             classDefinition.properties.forEach(p => {
                 csharp.writeAutoProperty(p);
@@ -123,17 +124,17 @@ import { CSharpWriter } from '@yellicode/csharp';
 import * as elements from '@yellicode/elements';
 
 Generator.generateFromModel({ outputFile: './model-based-sample.cs' }, (output: TextWriter, model: elements.Model) => {
-    const csharp = new CSharpWriter(output);   
+    const csharp = new CSharpWriter(output);
     model.getAllClasses().forEach(cls => {
         csharp.writeClassBlock(cls, () => {
             cls.ownedAttributes.forEach(att => {
                 csharp.writeAutoProperty(att);
                 csharp.writeLine();
-            });            
+            });
         }, { isPartial: true }); // marking the class 'partial'
         csharp.writeLine();
     });
-});     
+});
 ```
 
 ## API Documentation

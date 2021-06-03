@@ -22,7 +22,7 @@ export enum CollectionType {
 }
 
 export enum NamespaceFeatures {
-    None = 0,    
+    None = 0,
     All = None
 }
 
@@ -44,7 +44,7 @@ export enum ClassFeatures {
     XmlDocSummary = 1 << 0,
     Generalizations = 1 << 1,
     InterfaceRealizations = 1 << 2,
-    All = XmlDocSummary | Generalizations | InterfaceRealizations    
+    All = XmlDocSummary | Generalizations | InterfaceRealizations
 }
 
 export interface ClassOptions {
@@ -57,7 +57,12 @@ export interface ClassOptions {
     */
     isPartial?: boolean;
     /**
-     * Indicates if the class should be made abstract. 
+    * Indicates if the class should be a static class.
+    * The default value is false.
+    */
+    isStatic?: boolean;
+    /**
+     * Indicates if the class should be made abstract.
      * By default, the value of the 'Abstract' class setting in the model is used.
      */
     isAbstract?: boolean;
@@ -73,7 +78,7 @@ export interface ClassOptions {
 
 export enum StructFeatures {
     None = 0,
-    XmlDocSummary = 1 << 0,    
+    XmlDocSummary = 1 << 0,
     InterfaceRealizations = 1 << 1,
     All = XmlDocSummary | InterfaceRealizations
 }
@@ -97,7 +102,7 @@ export enum InterfaceFeatures {
     None = 0,
     XmlDocSummary = 1 << 0,
     Generalizations = 1 << 1,
-    All = XmlDocSummary | Generalizations    
+    All = XmlDocSummary | Generalizations
 }
 
 export interface InterfaceOptions {
@@ -122,7 +127,7 @@ export enum EnumFeatures {
      * Writes enumeration member initializers. This flag only applies when values are provided in the model.
      */
     Initializers = 1 << 1,
-    All = XmlDocSummary | Initializers  
+    All = XmlDocSummary | Initializers
 }
 
 export enum EnumMemberFeatures {
@@ -133,7 +138,7 @@ export enum EnumMemberFeatures {
      */
     Initializers = 1 << 1,
     All = XmlDocSummary | Initializers
-  
+
 }
 
 export interface EnumOptions {
@@ -152,7 +157,7 @@ export enum PropertyFeatures {
      */
     AccessModifier = 1 << 1,
     OptionalModifier = 1 << 2,
-    All = XmlDocSummary | AccessModifier | OptionalModifier    
+    All = XmlDocSummary | AccessModifier | OptionalModifier
 }
 
 export interface PropertyOptions {
@@ -165,7 +170,7 @@ export interface PropertyOptions {
     */
     collectionType?: CollectionType;
     /**
-     * Indicates if the property should be made virtual. The default value is false. 
+     * Indicates if the property should be made virtual. The default value is false.
      */
     virtual?: boolean;
 }
@@ -179,7 +184,7 @@ export enum MethodFeatures {
     * The access modifier if the owner is not an Interface.
     */
     AccessModifier = 1 << 3,
-    All = XmlDocSummary | XmlDocParameters | XmlDocReturns | AccessModifier    
+    All = XmlDocSummary | XmlDocParameters | XmlDocReturns | AccessModifier
 }
 
 export interface MethodOptions {
@@ -192,11 +197,11 @@ export interface MethodOptions {
      */
     collectionType?: CollectionType;
     /**
-     * Indicates if the method should be made virtual. The default value is false. 
+     * Indicates if the method should be made virtual. The default value is false.
      */
-    isVirtual?: boolean;    
+    isVirtual?: boolean;
     /**
-     * Indicates if the method should be made abstract. 
+     * Indicates if the method should be made abstract.
      * By default, the value of the 'Abstract' operation setting in the model is used.
      */
     isAbstract?: boolean;
