@@ -75,6 +75,11 @@ export interface ClassDefinition extends TypeDefinition {
      */
     isAbstract?: boolean;
     /**
+     * Indicates whether the class should be sealed.
+     * The default value is false.
+     */
+    isSealed?: boolean;
+    /**
     * Contains the names of the interfaces that the class should implement.
     * This field is optional.
     */

@@ -67,6 +67,11 @@ export interface ClassOptions {
      */
     isAbstract?: boolean;
     /**
+     * Indicates if the class should be sealed.
+     * The default value is false.
+     */
+    isSealed?: boolean;
+    /**
      * Any additional interface names that the class should implement.
      */
     implements?: string[];

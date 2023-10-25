@@ -114,6 +114,9 @@ export class CSharpWriter extends CodeWriter {
         else if (definition.isAbstract) { // note that static classes cannot be abstract, hence the else-statement
             this.write('abstract ');
         }
+        else if (definition.isSealed) {
+            this.write('sealed ');
+        }
         if (definition.isPartial) {
             this.write('partial ');
         }
