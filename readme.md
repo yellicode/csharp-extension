@@ -34,6 +34,7 @@ The first overload accepts a `ClassDefinition`, which has the following structur
 export interface ClassDefinition extends TypeDefinition {
     isStatic?: boolean;
     isAbstract?: boolean;
+    isSealed?: boolean;
     implements?: string[];
     inherits?: string[];
     properties?: PropertyDefinition[];

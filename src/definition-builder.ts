@@ -36,6 +36,7 @@ export class DefinitionBuilder {
         if (elements.isClass(type)) {
             definition.isStatic = options.isStatic;
             definition.isAbstract = type.isAbstract || options.isAbstract;
+            definition.isSealed = options.isSealed && !definition.isAbstract;
         }
         return definition;
     }
