@@ -1,6 +1,10 @@
 ﻿import * as elements from '@yellicode/elements';
 
 export class CSharpTypeNameProvider extends elements.DefaultTypeNameProvider {
+    constructor(private nullableReferenceTypes?: boolean) {
+        super();
+    }
+
     protected /*override*/ getTypeNameForType(type: elements.Type | null, isDataType: boolean): string | null {
         if (!type) return null;
 
@@ -15,28 +19,30 @@ export class CSharpTypeNameProvider extends elements.DefaultTypeNameProvider {
         return super.getTypeNameForType(type, isDataType);
     }
 
-    public static canBeNullable(typedElement: elements.TypedElement, csTypeName: string): boolean {
-        if (!typedElement || !csTypeName) 
+    public /* virtual* */ canBeNullable(typedElement: elements.TypedElement, csTypeName: string): boolean {
+        if (!typedElement || !csTypeName)
             return false;
 
         // A collection cannot be nullable
-        if (elements.isMultiplicityElement(typedElement) && typedElement.isMultivalued()){
+        if (elements.isMultiplicityElement(typedElement) && typedElement.isMultivalued()) {
             return false;
         }
 
-        // Check the mapped type name (it could come from a custom TypeNameProvider) 
-        switch (csTypeName) { // the following cannot be nullable:
-            case 'string':
-            case 'System.String':
-            case 'object':
-            case 'System.Object':
-                return false;
+        if (!this.nullableReferenceTypes) {
+            // Check the mapped type name (it could come from a custom TypeNameProvider) 
+            switch (csTypeName) { // the following cannot be nullable:
+                case 'string':
+                case 'System.String':
+                case 'object':
+                case 'System.Object':
+                    return false;
+            }
         }
 
         // Check the type itself
         const type = typedElement.type;
         if (!type) return false;
 
-        return elements.isEnumeration(type) || elements.isDataType(type); // isDataType includes PrimitiveType      
-    }   
+        return this.nullableReferenceTypes || elements.isEnumeration(type) || elements.isDataType(type); // isDataType includes PrimitiveType      
+    }
 }

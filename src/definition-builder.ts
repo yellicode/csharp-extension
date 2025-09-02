@@ -5,7 +5,7 @@ import { ParameterDirectionKind } from '@yellicode/elements';
 import { CSharpTypeNameProvider } from './csharp-type-name-provider';
 
 export class DefinitionBuilder {
-    constructor(private typeNameProvider: elements.TypeNameProvider) { }
+    constructor(private typeNameProvider: CSharpTypeNameProvider) { }
 
     public buildNamespaceDefinition(pack: elements.Package, options?: opts.NamespaceOptions): NamespaceDefinition {
         if (!options) options = {};
@@ -143,7 +143,7 @@ export class DefinitionBuilder {
 
         if ((features & opts.PropertyFeatures.OptionalModifier) &&
             property.lower === 0 &&
-            CSharpTypeNameProvider.canBeNullable(property, typename)) {
+            this.typeNameProvider.canBeNullable(property, typename)) {
             definition.isNullable = true;
         }
 
@@ -202,7 +202,7 @@ export class DefinitionBuilder {
             const paramDefinition: ParameterDefinition = DefinitionBuilder.buildDefinitionBase<ParameterDefinition>(p, !!(features & opts.MethodFeatures.XmlDocParameters));
             paramDefinition.isOutput = p.direction === elements.ParameterDirectionKind.out;
             paramDefinition.isReference = p.direction === elements.ParameterDirectionKind.inout;
-            paramDefinition.isNullable = p.lower === 0 && CSharpTypeNameProvider.canBeNullable(p, typeName);
+            paramDefinition.isNullable = p.lower === 0 && this.typeNameProvider.canBeNullable(p, typeName);
             paramDefinition.typeName = typeName;
             paramDefinition.defaultValue = DefinitionBuilder.getDefaultValueString(p.defaultValue),
                 inOutParameters.push(paramDefinition);

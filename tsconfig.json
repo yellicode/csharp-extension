@@ -7,8 +7,7 @@
         "moduleResolution": "node",
         "inlineSourceMap": false,
         "lib": [
-            "es2015",
-            "dom"
+            "es2015"
         ]
     },
     "exclude": [

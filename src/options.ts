@@ -1,4 +1,4 @@
-﻿import { TypeNameProvider } from '@yellicode/elements';
+﻿import { CSharpTypeNameProvider } from './csharp-type-name-provider';
 
 export interface WriterOptions {
     /**
@@ -9,7 +9,11 @@ export interface WriterOptions {
     /**
      * Sets an optional TypeNameProvider. By default, the CSharpTypeNameProvider is used.
      */
-    typeNameProvider?: TypeNameProvider;
+    typeNameProvider?: CSharpTypeNameProvider;
+    /**
+     * True to allow generating nullable reference types for optional properties.
+     */
+    nullableReferenceTypes?: boolean;
 }
 
 /**

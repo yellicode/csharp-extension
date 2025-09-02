@@ -13,7 +13,7 @@ import { NamespaceDefinition, ClassDefinition, AccessModifier, InterfaceDefiniti
  * independently.
  */
 export class CSharpWriter extends CodeWriter {
-    private typeNameProvider: elements.TypeNameProvider;
+    private typeNameProvider: CSharpTypeNameProvider;
     private definitionBuilder: DefinitionBuilder;
     private commentWriter: CSharpCommentWriter;
 
@@ -26,7 +26,7 @@ export class CSharpWriter extends CodeWriter {
         super(writer);
         if (!options) options = {};
 
-        this.typeNameProvider = options.typeNameProvider || new CSharpTypeNameProvider();
+        this.typeNameProvider = options.typeNameProvider || new CSharpTypeNameProvider(options.nullableReferenceTypes);
         this.definitionBuilder = new DefinitionBuilder(this.typeNameProvider);
         this.commentWriter = new CSharpCommentWriter(writer, options.maxCommentWidth || 100);
     }
